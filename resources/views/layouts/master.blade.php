@@ -124,11 +124,10 @@
 
                                 <li class="dropdown"><a class="nav-link menu-title"><i data-feather="home"></i><span>Dashboard</span></a>
                                     <!-- <ul class="nav-submenu menu-content">
-                                        <li><a href="{{route('admin.bank_index') }}">Bank</a></li>
+                                        <li><a href="">Bank</a></li>
                                     </ul> -->
                                 </li>
-                                <li class="dropdown"><a class="nav-link menu-title" href="{{route('admin.bank_index') }}"><i data-feather="airplay"></i><span>Bank</span></a></li>
-
+                            
                                 {{-- @if(auth()->user()->Role == 'Admin')
                                 { --}}
                                 <li class="dropdown"><a class="nav-link menu-title"><i data-feather="airplay"></i><span>Management</span></a>
@@ -140,13 +139,7 @@
                                         <li><a href="{{route('admin.usersindex') }}">User</a></li>
                                     </ul>
                                 </li>
-                                {{-- } --}}
-                                {{-- @endif --}}
-                                <li class="dropdown"><a class="nav-link menu-title" href="{{route('admin.customer_index') }}"><i data-feather="airplay"></i><span>Customer</span></a></li>
-                                <li class="dropdown"><a class="nav-link menu-title" href="{{route('admin.mortageindex') }}"><i data-feather="layout"></i><span>Mortgage</span></a></li>
-                                <!-- <li class="dropdown"><a class="nav-link menu-title" href="{{route('admin.loancustomerindex') }}"><i data-feather="airplay"></i><span>Loan Customer</span></a></li> -->
-                                {{-- <li class="dropdown"><a class="nav-link menu-title" href="{{route('admin.loanindex') }}"><i data-feather="layout"></i><span>Loan</span></a></li> --}}
-                                <li class="dropdown"><a class="nav-link menu-title" href="{{route('admin.balloon_index') }}"><i data-feather="layout"></i><span>Commercial Loan</span></a></li>
+
                                 <li class="dropdown"><a class="nav-link menu-title" href="{{url('profile/password') }}"><i data-feather="log-out"></i></i></i><span>Change Password</span></a></li>
                                 <li class="dropdown"><a class="nav-link menu-title" href="{{route('logout') }}"><i data-feather="log-out"></i><span>Logout</span></a></li>
 

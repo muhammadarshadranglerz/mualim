@@ -20,7 +20,7 @@ class UsersController extends Controller
 
         // $users = User::with(['roles'])->get();
         $users = User::whereHas('roles', function ($q) {
-            $q->where('title', 'Admin');
+            $q->where('title', 'User');
         })->get();
         return view('admin.users.index', compact('users'));
     }

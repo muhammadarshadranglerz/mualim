@@ -43,26 +43,6 @@ class PermissionsTableSeeder extends Seeder
                 'title' => 'user_access',
             ],
             [
-                'id'    => 9,
-                'title' => 'mortage_create',
-            ],
-            [
-                'id'    => 10,
-                'title' => 'mortage_edit',
-            ],
-            [
-                'id'    => 11,
-                'title' => 'mortage_show',
-            ],
-            [
-                'id'    => 12,
-                'title' => 'mortage_delete',
-            ],
-            [
-                'id'    => 13,
-                'title' => 'mortage_access',
-            ],
-            [
                 'id'    => 14,
                 'title' => 'profile_password_edit',
             ],
