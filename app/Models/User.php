@@ -48,19 +48,7 @@ class User extends Authenticatable
         return $this->roles()->where('id', 1)->exists();
     }
 
-    public function userMortages()
-    {
-        return $this->hasMany(Mortage::class, 'user_id', 'id');
-    }
-    public function auto_loan()
-    {
-        return $this->hasMany(Auto_loan::class, 'user_id', 'id');
-    }
-    public function balloon()
-    {
-        return $this->hasMany(Balloon::class, 'user_id', 'id');
-    }
-
+    
     public function getEmailVerifiedAtAttribute($value)
     {
         return $value ? Carbon::createFromFormat('Y-m-d H:i:s', $value)->format(config('panel.date_format') . ' ' . config('panel.time_format')) : null;
