@@ -13,7 +13,7 @@
     <meta name="author" content="pixelstrap">
     <link rel="icon" href="{{ asset('./assets/images/favicon.png') }}" type="image/x-icon">
     <link rel="shortcut icon" href="{{ asset('./assets/images/favicon.png') }}" type="image/x-icon">
-    <title>Loan</title>
+    <title>Mualim</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet" />
     <link href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" rel="stylesheet" />
@@ -82,7 +82,7 @@
                     <div class="toggle-sidebar ml-4"><i class="status_toggle middle" data-feather="align-center" id="sidebar-toggle"></i></div>
                 </div>
                 <div class="left-menu-header col">
-                    <!-- <ul>
+                    {{-- <ul>
                         <li>
                             <form class="form-inline search-form">
                                 <div class="search-bg"><i class="fa fa-search"></i>
@@ -90,7 +90,7 @@
                                 </div>
                             </form><span class="d-sm-none mobile-search search-bg"><i class="fa fa-search"></i></span>
                         </li>
-                    </ul> -->
+                    </ul> --}}
                 </div>
                 <div class="nav-right col pull-right right-menu p-0">
                     <ul class="nav-menus">
@@ -122,14 +122,11 @@
                                     <div class="mobile-back text-end"><span>Back</span><i class="fa fa-angle-right ps-2" aria-hidden="true"></i></div>
                                 </li>
 
-                                <li class="dropdown"><a class="nav-link menu-title"><i data-feather="home"></i><span>Dashboard</span></a>
+                                <li class="dropdown"><a class="nav-link menu-title" href="{{route('admin.home') }}"><i data-feather="home"></i><span>Dashboard</span></a>
                                     <!-- <ul class="nav-submenu menu-content">
                                         <li><a href="">Bank</a></li>
                                     </ul> -->
                                 </li>
-                            
-                                {{-- @if(auth()->user()->Role == 'Admin')
-                                { --}}
                                 <li class="dropdown"><a class="nav-link menu-title"><i data-feather="airplay"></i><span>Management</span></a>
                                     <ul class="nav-submenu menu-content">
 
@@ -137,6 +134,12 @@
                                         <li><a href="{{route('admin.roleindex') }}">Roles</a></li>
 
                                         <li><a href="{{route('admin.usersindex') }}">User</a></li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown"><a class="nav-link menu-title"><i data-feather="airplay"></i><span>Courses</span></a>
+                                    <ul class="nav-submenu menu-content">
+                                        <li><a href="{{route('admin.subject.index') }}">Subject</a></li>
+                                        <li><a href="{{route('admin.chapter.index') }}">Chapter</a></li>
                                     </ul>
                                 </li>
 

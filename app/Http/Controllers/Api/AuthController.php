@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
+use Validator;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -15,12 +17,19 @@ class AuthController extends Controller
      */
     public function register(Request $request)
     {
-        return 'register';
-        $request->validate([
+
+        $validator = Validator::make($request->all(), [
             'name' => 'required',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:users',
             'password' => 'required|min:6',
+            // 'confirm_password' => 'confirmed:password',
         ]);
+        if ($validator->fails()) {
+            return response([
+                'status' => 400,
+                'errors' => $validator->errors()->all(),
+            ], 400);
+        }
 
         $user = User::create([
             'name' => $request->name,
@@ -28,9 +37,15 @@ class AuthController extends Controller
             'password' => bcrypt($request->password),
         ]);
 
+        $token = $data->createToken('Arshad')->plainTextToken;
         $user->roles()->attach(2); // Simple user role
 
-        return response()->json($user);
+        return response([
+            'status' => 201,
+            'success' => 'Successfully Registed!',
+            'data' => $data,
+            'token' => $token,
+        ], 201);
     }
 
     /**
@@ -40,14 +55,26 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
-        return 'login';
-        $request->validate([
-            'email' => 'email|required',
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
             'password' => 'required',
         ]);
+        if ($validator->fails()) {
+            return response([
+                'status' => 400,
+                'errors' => $validator->errors()->all(),
+            ], 400);
+        }
 
-        $credentials = request(['email', 'password']);
-        if (!auth()->attempt($credentials)) {
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+
+            $user = Auth::guard('web')->user();
+            $token = $user->createToken('auth-token')->plainTextToken;
+            return response()->json([
+                'token' => $token,
+                'user' => $user,
+            ]);
+        } else {
             return response()->json([
                 'message' => 'The given data was invalid.',
                 'errors' => [
@@ -58,13 +85,6 @@ class AuthController extends Controller
             ], 422);
         }
 
-        $user = User::where('email', $request->email)->first();
-        $authToken = $user->createToken('auth-token')->plainTextToken;
-
-        return response()->json([
-            'access_token' => $authToken,
-            'user' => $user,
-        ]);
     }
 
     /**
@@ -73,53 +93,67 @@ class AuthController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function logout()
     {
-        //
+        Auth::logout();
+
+        return response()->json([
+            'success' => 'logout Successfully',
+
+        ]);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    
+    //forgot password
+    public function forgot_password(Request $request)
     {
-        //
+        // return $request;
+       //send mail to the user for forgot password
+       $user = User::where('email', $request->email)->first();
+       if (!$user) {
+           return response()->json(['failed'=>'Failed! email is not registered.']);
+       }
+       $token = Str::random(60);
+       $user->token = $token;
+       $user->save();
+
+       Mail::to($request->email)->send(new ForgotPassword($user->name, $token));
+       if(Mail::failures() != 0) {
+           return response()->json(['success'=>'Success! password reset link has been sent to your email']);
+       }
+       return response()->json(['failed'=>'Failed! there is some issue with email providered.']);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+
+
+    // After Register Users Send mail to the user for create thier Password
+    public function forgotPasswordValidate($token)
     {
-        //
+        $user = User::where('token', $token)->first();
+        if ($user) {
+            $email = $user->email;
+            return view('admin.PasswordReset.change-password', compact('email'));
+        }
+        return redirect()->route('forgot_password')->with('failed', 'Password reset link is expired');
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
+    public function updatePassword(Request $request) {
+        $this->validate($request, [
+            'email' => 'required',
+            'password' => 'required',
+            'confirm_password' => 'required|same:password'
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+        if ($user) {
+
+            $user->password = Hash::make($request->password);
+            $user->save();
+            return view('admin.PasswordReset.popup');
+        }
+        return 'Failed! something went wrong';
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
+
+
 }

@@ -14,7 +14,6 @@ Route::get('/home', function () {
 Route::get('logout', 'Auth\LoginController@logout')->name('logout');
 
 Auth::routes(['register' => false]);
-Route::get('sendmail', 'testController@send');
 
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'middleware' => ['auth']], function () {
     Route::get('/', 'HomeController@index')->name('home');
@@ -32,6 +31,11 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::delete('users/destroy', 'UsersController@massDestroy')->name('users.massDestroy');
     Route::resource('users', 'UsersController');
     Route::get('users', 'UsersController@index')->name('usersindex');
+    //subject
+    Route::resource('subject', 'SubjectController');
+    //chapter
+    Route::resource('chapter', 'ChapterController');
+    // Route::get('users', 'UsersController@index')->name('usersindex');
 
 
     
