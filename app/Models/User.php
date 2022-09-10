@@ -11,12 +11,14 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
     use SoftDeletes;
     use Notifiable;
     use HasFactory;
+    use HasApiTokens;
 
     public $table = 'users';
 
@@ -48,7 +50,7 @@ class User extends Authenticatable
         return $this->roles()->where('id', 1)->exists();
     }
 
-    
+
     public function getEmailVerifiedAtAttribute($value)
     {
         return $value ? Carbon::createFromFormat('Y-m-d H:i:s', $value)->format(config('panel.date_format') . ' ' . config('panel.time_format')) : null;
@@ -80,5 +82,4 @@ class User extends Authenticatable
     {
         return $date->format('Y-m-d H:i:s');
     }
-    
 }
