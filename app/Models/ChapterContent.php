@@ -8,4 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class ChapterContent extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'title',
+        'description',
+        'video',
+        'file',
+        'chapter_id',
+    ];
+    
+  
 }
