@@ -39,6 +39,7 @@ class User extends Authenticatable
         'phone',
         // 'email_verified_at',
         'password',
+        'subject_id',
         'remember_token',
         'created_at',
         'updated_at',
@@ -82,4 +83,14 @@ class User extends Authenticatable
     {
         return $date->format('Y-m-d H:i:s');
     }
+
+     /**
+      * Get the user that owns the User
+      *
+      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+      */
+     public function subject()
+     {
+         return $this->belongsTo(Subject::class, 'subject_id');
+     }
 }

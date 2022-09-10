@@ -8,4 +8,19 @@ use Illuminate\Database\Eloquent\Model;
 class Subject extends Model
 {
     use HasFactory;
+    /**
+     * Get all of the comments for the Subject
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function user()
+    {
+        return $this->hasMany(User::class, 'subject_id');
+    }
+
+
+    public function chapter()
+    {
+        return $this->hasMany(Chapter::class, 'subject_id');
+    }
 }
