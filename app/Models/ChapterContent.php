@@ -10,7 +10,7 @@ class ChapterContent extends Model
     use HasFactory;
     protected $fillable = [
         'title',
-        'description',
+        'note',
         'video',
         'file',
         'chapter_id',

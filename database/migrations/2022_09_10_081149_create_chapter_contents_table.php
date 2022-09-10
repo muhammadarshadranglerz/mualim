@@ -16,9 +16,9 @@ class CreateChapterContentsTable extends Migration
         Schema::create('chapter_contents', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('description');
-            $table->string('video');
-            $table->string('file');
+            $table->string('note');
+            $table->string('video')->nullable();
+            $table->string('file')->nullable();
             $table->unsignedBigInteger('chapter_id');
             $table->foreign('chapter_id')->references('id')->on('chapters')->onDelete('cascade');
             $table->timestamps();

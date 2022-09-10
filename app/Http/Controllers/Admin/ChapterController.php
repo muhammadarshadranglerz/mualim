@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Chapter;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\ChapterContent;
+use App\Models\Subject;
 
 class ChapterController extends Controller
 {
@@ -26,7 +28,8 @@ class ChapterController extends Controller
      */
     public function create()
     {
-        return view('admin.chapter.create');
+        $subjects = Subject::select('id', 'name')->get();
+        return view('admin.chapter.create', ['subjects' => $subjects]);
     }
 
     /**
@@ -37,8 +40,40 @@ class ChapterController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate(
+            [
+                "name" => "required|string|max:100",
+                "description" => "required|string|max:255",
+                "subject_id" => "required|integer",
+                "title" => "required|string|max:100",
+                "note" => "required|string|max:255",
+                "video" => "nullable|mimetypes:video/x-flv,video/mp4,application/x-mpegURL,video/MP2T,video/3gpp,video/quicktime,video/x-msvideo,video/x-ms-wmv",
+                "file" => "nullable|file|max:10240",
+            ],
+            [
+                "subject_id.required" => "Select a Subject",
+                "video.mimetypes" => "Video formate is not supported",
+            ]
+        );
+        $inputs = $request->only('title', 'note');
+        $destinationPath = public_path('uploads');
+        if ($request->file('video')) {
+            $video = $request->file('video');
+            $videoName = time() . '_' . $video->getClientOriginalName();
+            $video->move($destinationPath, $videoName);
+            $inputs += ['video' => 'uploads/' . $videoName];
+        }
+        if ($request->file('file')) {
+            $file = $request->file('file');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $file->move($destinationPath, $fileName);
+            $inputs += ['file' => 'uploads/' . $fileName];
+        }
+        $chapter = Chapter::create($request->only('name', 'description', 'subject_id'));
+        $inputs += ['chapter_id' => $chapter->id];
+        ChapterContent::create($inputs);
+        // $chapter->content()->save($chapter);
         return redirect()->route('admin.chapter.index');
-        
     }
 
     /**
@@ -49,7 +84,6 @@ class ChapterController extends Controller
      */
     public function show($id)
     {
-
     }
 
     /**
@@ -60,8 +94,9 @@ class ChapterController extends Controller
      */
     public function edit($id)
     {
+        $subjects = Subject::select('id', 'name')->get();
         $chapter =  Chapter::find($id);
-        return view('admin.chapter.edit', compact('chapter'));
+        return view('admin.chapter.edit', ['subjects' => $subjects, 'chapter' => $chapter]);
     }
 
     /**
@@ -74,6 +109,49 @@ class ChapterController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $request->validate(
+            [
+                "ccid" => "required|integer",
+                "name" => "required|string|max:100",
+                "description" => "required|string|max:255",
+                "subject_id" => "required|integer",
+                "title" => "required|string|max:100",
+                "note" => "required|string|max:255",
+                "video" => "nullable|mimetypes:video/x-flv,video/mp4,application/x-mpegURL,video/MP2T,video/3gpp,video/quicktime,video/x-msvideo,video/x-ms-wmv",
+                "file" => "nullable|file|max:10240",
+            ],
+            [
+                "subject_id.required" => "Select a Subject",
+                "video.mimetypes" => "Video formate is not supported",
+            ]
+        );
+        $chapter = Chapter::find($id);
+        $chapterContent = ChapterContent::find($request->ccid);
+        $inputs = $request->only('title', 'note');
+        $destinationPath = public_path('uploads');
+        if ($request->file('video')) {
+            $oldVideo =  $chapterContent->video;
+            if (file_exists($oldVideo)) {
+                unlink($oldVideo);
+            }
+            $video = $request->file('video');
+            $videoName = time() . '_' . $video->getClientOriginalName();
+            $video->move($destinationPath, $videoName);
+            $inputs += ['video' => 'uploads/' . $videoName];
+        }
+        if ($request->file('file')) {
+            $oldFile =  $chapterContent->file;
+            if (file_exists($oldFile)) {
+                unlink($oldFile);
+            }
+            $file = $request->file('file');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $file->move($destinationPath, $fileName);
+            $inputs += ['file' => 'uploads/' . $fileName];
+        }
+        $chapter->update($inputs);
+        $chapter->update($request->only('name', 'description', 'subject_id'));
+        return redirect()->route('admin.chapter.index');
     }
 
     /**

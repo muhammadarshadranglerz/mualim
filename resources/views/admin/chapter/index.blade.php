@@ -1,12 +1,19 @@
 @extends('layouts.master')
 @section('content')
-        <div style="margin-bottom: 10px;" class="row">
-            <div class="col-lg-12">
-                <a class="btn btn-success" href="{{ route('admin.chapter.create') }}">
-                    {{ trans('Add Chapter') }}
-                </a>
-            </div>
+    <div style="margin-bottom: 10px;" class="row">
+        <div class="col-lg-6">
+            <a class="btn btn-success" href="{{ route('admin.chapter.create') }}">
+                {{ trans('Add Chapter') }}
+            </a>
         </div>
+        <div class="col-lg-6">
+            @if (session()->has('success'))
+                <div class="text-success">
+                    {{ session()->get('success') }}
+                </div>
+            @endif
+        </div>
+    </div>
     <div class="card">
         <div class="card-header">
             {{ trans('Chapter') }}
@@ -19,20 +26,18 @@
                         <tr>
                             <th> #</th>
                             <th> Name</th>
-                            <th> Title</th>
-                            <th> Course</th>
                             <th> Description</th>
+                            <th> Subject Name</th>
                             <th> Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($chapters as $key => $chapter)
                             <tr>
-                                <td>{{$loop->iteration}}</td>
-                                <td>{{$chapter->name}}</td>
-                                <td>title</td>
-                                <td>course</td>
-                                <td>{{$chapter->description}}</td>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $chapter->name }}</td>
+                                <td>{{ $chapter->description }}</td>
+                                <td>{{ $chapter->subject->name }}</td>
                                 <td>
                                     <a class="btn btn-xs btn-info" href="{{ route('admin.chapter.edit', $chapter->id) }}">
                                         {{ trans('global.edit') }}
@@ -54,4 +59,3 @@
         </div>
     </div>
 @endsection
-

@@ -6,6 +6,8 @@ use App\Models\Subject;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
+use function PHPUnit\Framework\fileExists;
+
 class SubjectController extends Controller
 {
     /**
@@ -16,8 +18,8 @@ class SubjectController extends Controller
     public function index()
     {
 
-         $subjects = Subject::all();
-        return view('admin.subject.index',compact('subjects'));
+        $subjects = Subject::all();
+        return view('admin.subject.index', compact('subjects'));
     }
 
     /**
@@ -27,9 +29,7 @@ class SubjectController extends Controller
      */
     public function create()
     {
-
         return view('admin.subject.create');
-        
     }
 
     /**
@@ -40,8 +40,30 @@ class SubjectController extends Controller
      */
     public function store(Request $request)
     {
-        return redirect()->route('admin.subject.index');
+        $request->validate(
+            [
+                "name" => "required|string|max:100",
+                "thumbnail" => "required|image|max:4096",
+                "description" => "required|string|max:255",
+            ]
+        );
+        $file = $request->file('thumbnail');
+        $fileName = time() . '_' . $file->getClientOriginalName();
+        $destinationPath = public_path('uploads');
+        $file->move($destinationPath, $fileName);
+        $inputs = $request->only('name', 'thumbnail', 'description');
+        $inputs['thumbnail'] =  'uploads/' . $fileName;
+        Subject::create($inputs);
+        return redirect()->route('admin.subject.index')->with('success', 'Added');
     }
+
+    // $request->validate([
+    //     'file' => 'required|mimes:pdf,xlx,csv|max:2048',
+    // ]);
+
+    // $fileName = time().'.'.$request->file->extension();  
+
+    // $request->file->move(public_path('uploads'), $fileName);
 
     /**
      * Display the specified resource.
@@ -51,7 +73,6 @@ class SubjectController extends Controller
      */
     public function show($id)
     {
-       
     }
 
     /**
@@ -62,9 +83,9 @@ class SubjectController extends Controller
      */
     public function edit($id)
     {
-        
-        $subject = Subject::find($id);
-        return view('admin.subject.edit',compact('subject'));
+
+        $subject = Subject::findOrFail($id);
+        return view('admin.subject.edit', compact('subject'));
     }
 
     /**
@@ -77,6 +98,29 @@ class SubjectController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $request->validate(
+            [
+                "name" => "required|string||max:100",
+                "thumbnail" => "nullable|image|max:4096",
+                "description" => "required|string||max:255",
+            ]
+        );
+        if ($request->file('thumbnail')) {
+            $subject = Subject::find($id);
+            $old =  $subject->thumbnail;
+            if (file_exists($old)) {
+                unlink($old);
+            }
+            $file = $request->file('thumbnail');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $destinationPath = public_path('uploads');
+            $file->move($destinationPath, $fileName);
+            $inputs = $request->only('name', 'thumbnail', 'description');
+            $inputs['thumbnail'] =  'uploads/' . $fileName;
+            Subject::find($id)->update($inputs);
+        }
+        Subject::find($id)->update($request->only('name', 'description'));
+        return redirect()->route('admin.subject.index')->with('success', 'Updated');
     }
 
     /**
@@ -87,8 +131,12 @@ class SubjectController extends Controller
      */
     public function destroy($id)
     {
-        Subject::destroy($id);
+        $subject = Subject::find($id);
+        $old = 'uploads/' . $subject->thumbnail;
+        if (file_exists($old)) {
+            unlink($old);
+        }
+        $subject->destroy($id);
         return redirect()->route('admin.subject.index');
-
     }
 }

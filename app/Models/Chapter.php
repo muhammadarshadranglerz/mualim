@@ -10,9 +10,10 @@ class Chapter extends Model
     use HasFactory;
     protected $fillable = [
         'name',
+        'description',
         'subject_id',
-        'Thumbnail',
     ];
+
     /**
      * Get the user that owns the Chapter
      *
