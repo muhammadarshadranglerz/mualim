@@ -20,6 +20,7 @@ class AuthController extends Controller
 
         $validator = Validator::make($request->all(), [
             'name' => 'required',
+            'subject_id' => 'required',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6',
             // 'confirm_password' => 'confirmed:password',
@@ -35,15 +36,16 @@ class AuthController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
+            'subject_id' => $request->subject_id,
         ]);
 
-        $token = $data->createToken('Arshad')->plainTextToken;
+        $token = $user->createToken('Arshad')->plainTextToken;
         $user->roles()->attach(2); // Simple user role
 
         return response([
             'status' => 201,
             'success' => 'Successfully Registed!',
-            'data' => $data,
+            'data' => $user,
             'token' => $token,
         ], 201);
     }

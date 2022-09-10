@@ -14,9 +14,8 @@ class CreateUsersTable extends Migration
             $table->string('email')->nullable()->unique();
             $table->string('phone')->nullable();
             $table->string('password')->nullable();
+            $table->string('action')->default(1);
             $table->string('remember_token')->nullable();
-            $table->unsignedBigInteger("subject_id");
-            $table->foreign('subject_id')->references('id')->on('subjects')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });
