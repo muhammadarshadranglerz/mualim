@@ -39,6 +39,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::resource('subject', 'SubjectController');
     //chapter
     Route::resource('chapter', 'ChapterController');
+    //question answer
+    Route::resource('question/answer', 'QuestionAnswerController');
     // Route::get('users', 'UsersController@index')->name('usersindex');
 
 
