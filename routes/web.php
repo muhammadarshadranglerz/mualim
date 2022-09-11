@@ -22,20 +22,19 @@ Auth::routes(['register' => false]);
 
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'middleware' => ['auth']], function () {
     Route::get('/', 'HomeController@index')->name('home');
-
-    Route::get('transaction', 'HomeController@transaction');
+   
     // Permissions
-    Route::resource('permissions', 'PermissionsController', ['except' => ['create', 'store', 'edit', 'update', 'show', 'destroy']]);
-    Route::get('permissions', 'PermissionsController@index')->name('permissions.index');
+    Route::delete('permissions/destroy', 'PermissionsController@massDestroy')->name('permissions.massDestroy');
+    Route::resource('permissions', 'PermissionsController');
 
     // Roles
-    Route::resource('roles', 'RolesController', ['except' => ['create', 'store', 'edit', 'update', 'show', 'destroy']]);
-    Route::get('roles', 'RolesController@index')->name('roleindex');
+    Route::delete('roles/destroy', 'RolesController@massDestroy')->name('roles.massDestroy');
+    Route::resource('roles', 'RolesController');
 
     // Users
     Route::delete('users/destroy', 'UsersController@massDestroy')->name('users.massDestroy');
     Route::resource('users', 'UsersController');
-    Route::get('users', 'UsersController@index')->name('usersindex');
+    Route::post('status', 'UsersController@status')->name('status');
     //subject
     Route::resource('subject', 'SubjectController');
     //chapter

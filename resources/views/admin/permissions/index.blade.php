@@ -1,6 +1,14 @@
 @extends('layouts.master')
 @section('content')
-
+@can('permission_create')
+    <div style="margin-bottom: 10px;" class="row">
+        <div class="col-lg-12">
+            <a class="btn btn-success" href="{{ route('admin.permissions.create') }}">
+                {{ trans('global.add') }} {{ trans('cruds.permission.title_singular') }}
+            </a>
+        </div>
+    </div>
+@endcan
 <div class="card">
     <div class="card-header">
         {{ trans('cruds.permission.title_singular') }} {{ trans('global.list') }}
@@ -38,6 +46,27 @@
                                 {{ $permission->title ?? '' }}
                             </td>
                             <td>
+                                @can('permission_show')
+                                <a class="btn btn-xs btn-primary" href="{{ route('admin.permissions.show', $permission->id) }}">
+                                    {{ trans('global.view') }}
+                                </a>
+                            @endcan
+
+                            @can('permission_edit')
+                                <a class="btn btn-xs btn-info" href="{{ route('admin.permissions.edit', $permission->id) }}">
+                                    {{ trans('global.edit') }}
+                                </a>
+                            @endcan
+
+                            @can('permission_delete')
+                                <form action="{{ route('admin.permissions.destroy', $permission->id) }}" method="POST"
+                                    style="display: inline-block;">
+                                    <input type="hidden" name="_method" value="DELETE">
+                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                    <input type="submit" class="btn btn-xs btn-danger"
+                                        value="{{ trans('global.delete') }}">
+                                </form>
+                            @endcan
 
 
 

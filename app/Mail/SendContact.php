@@ -16,9 +16,11 @@ class SendContact extends Mailable
      *
      * @return void
      */
-    public function __construct()
+    public $data;
+    public function __construct($data)
     {
         //
+        $this->data = $data;
     }
 
     /**
@@ -28,6 +30,7 @@ class SendContact extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.SendContact');
+        $data = $this->data;
+        return $this->markdown('emails.SendContact')->with('data', $data);
     }
 }

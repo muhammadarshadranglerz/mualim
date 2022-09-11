@@ -45,14 +45,14 @@
                         </li>
                     @endcan
                     @can('user_access')
-                        <li class="c-sidebar-nav-item">
+                        {{-- <li class="c-sidebar-nav-item">
                             <a href="{{ route("admin.users.index") }}" class="c-sidebar-nav-link {{ request()->is("admin/users") || request()->is("admin/users/*") ? "c-active" : "" }}">
                                 <i class="fa-fw fas fa-user c-sidebar-nav-icon">
 
                                 </i>
                                 {{ trans('cruds.user.title') }}
                             </a>
-                        </li>
+                        </li> --}}
                     @endcan
                 </ul>
             </li>

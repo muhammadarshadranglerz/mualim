@@ -80,6 +80,19 @@ class UsersController extends Controller
         return back();
     }
 
+    public function status(Request  $request)
+    {
+
+        $user = User::findOrFail($request->id);
+        $action = $user->action == 0 ? 1 : 0;
+        $user->action = $action;
+        $user->save();
+        return response()->json([
+            'success' => 'successfully updated',
+            'action' => $action
+        ]);
+    }
+
     public function massDestroy(MassDestroyUserRequest $request)
     {
         User::whereIn('id', request('ids'))->delete();

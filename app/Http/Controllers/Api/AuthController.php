@@ -3,10 +3,16 @@
 namespace App\Http\Controllers\Api;
 
 use Validator;
+use Carbon\Carbon;
 use App\Models\User;
+use App\Mail\SendContact;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
@@ -63,30 +69,31 @@ class AuthController extends Controller
         ]);
         if ($validator->fails()) {
             return response([
-                'status' => 400,
                 'errors' => $validator->errors()->all(),
-            ], 400);
+            ], 404);
         }
 
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-
-            $user = Auth::guard('web')->user();
-            $token = $user->createToken('auth-token')->plainTextToken;
-            return response()->json([
-                'token' => $token,
-                'user' => $user,
-            ]);
-        } else {
-            return response()->json([
-                'message' => 'The given data was invalid.',
-                'errors' => [
-                    'password' => [
-                        'Invalid credentials',
-                    ],
-                ],
-            ], 422);
+ 
+        $user = User::where('email', $request->email)->first();
+        if (isset($user) && $user->action == 0) {
+            return response([
+                'errors' => 'Your Account has been deactivated',
+            ], 404);
         }
 
+
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            return response([
+                'message' => ['These credentials was invalid']
+            ], 404);
+        }
+    
+         $token = $user->createToken('my-app-token')->plainTextToken;
+         return response()->json([
+            'token' => $token,
+            'user' => $user,
+        ],201);
+        
     }
 
     /**
@@ -97,63 +104,77 @@ class AuthController extends Controller
      */
     public function logout()
     {
-        Auth::logout();
 
-        return response()->json([
-            'success' => 'logout Successfully',
-
-        ]);
+       DB::table('personal_access_tokens')->where(['tokenable_id' => Auth::id()])->delete();
+        return response()->json(['success' => 'logout succefully'],200);
     }
 
     
-    //forgot password
     public function forgot_password(Request $request)
     {
-        // return $request;
-       //send mail to the user for forgot password
-       $user = User::where('email', $request->email)->first();
-       if (!$user) {
-           return response()->json(['failed'=>'Failed! email is not registered.']);
-       }
-       $token = Str::random(60);
-       $user->token = $token;
-       $user->save();
-
-       Mail::to($request->email)->send(new ForgotPassword($user->name, $token));
-       if(Mail::failures() != 0) {
-           return response()->json(['success'=>'Success! password reset link has been sent to your email']);
-       }
-       return response()->json(['failed'=>'Failed! there is some issue with email providered.']);
-    }
-
-
-
-    // After Register Users Send mail to the user for create thier Password
-    public function forgotPasswordValidate($token)
-    {
-        $user = User::where('token', $token)->first();
-        if ($user) {
-            $email = $user->email;
-            return view('admin.PasswordReset.change-password', compact('email'));
-        }
-        return redirect()->route('forgot_password')->with('failed', 'Password reset link is expired');
-    }
-
-    public function updatePassword(Request $request) {
-        $this->validate($request, [
-            'email' => 'required',
-            'password' => 'required',
-            'confirm_password' => 'required|same:password'
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|exists:users,email',
         ]);
-
-        $user = User::where('email', $request->email)->first();
-        if ($user) {
-
-            $user->password = Hash::make($request->password);
-            $user->save();
-            return view('admin.PasswordReset.popup');
+        if ($validator->fails()) {
+            return response([
+                'errors' => $validator->errors()->all(),
+            ], 404);
         }
-        return 'Failed! something went wrong';
+       
+        $user = User::where('email', $request->email)->first();
+        $data['email'] = $user->email;
+        $data['token'] = Str::random(30);
+        $data['url'] = url('api/token_confirm', $data['token']);
+        try {
+            Mail::to($data['email'])->send(new SendContact($data));
+            DB::table('password_resets')->insert([
+                'email' => $user->email,
+                'token' => $data['token'],
+                'created_at' => Carbon::now(),
+            ]);
+            return response()->json(['success'=>'Success! password reset link has been sent to your email']);
+            
+        } catch (\Swift_TransportException $e) {
+            if ($e->getMessage()) {
+                return response()->json(['failed'=>'Failed! there is some issue with email providered.']);
+            }
+        }
+    }
+
+    public function tokenConfirm($token)
+    {
+        $token_confirm = DB::table('password_resets')
+            ->where([
+                'token' => $token,
+            ])
+            ->first();
+        if ($token_confirm) {
+            return view('auth.passwords.api-reset', compact('token'));
+        } else {
+            return response()->json(['failed'=>'Failed! reset link has been expired']);
+        }
+
+    }
+
+    public function submitResetPassword(Request $request)
+    {
+        $request->validate([
+            'password' => 'required|string|min:6|confirmed',
+        ]);
+        $token = DB::table('password_resets')
+            ->where([
+                'token' => $request->token,
+            ])
+            ->first();
+        $user = User::where('email', $token->email)
+            ->update(['password' => Hash::make($request->password)]);
+        DB::table('password_resets')->where(['email' => $request->email])->delete();
+
+       
+        $user = User::where('email', $token->email)->first();
+        return 'Success! password has been reset Successfully';
+
+
     }
 
 

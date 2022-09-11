@@ -10,40 +10,84 @@ class PermissionsTableSeeder extends Seeder
     public function run()
     {
         $permissions = [
-            [
+             [
                 'id'    => 1,
                 'title' => 'user_management_access',
             ],
             [
                 'id'    => 2,
-                'title' => 'permission_access',
+                'title' => 'permission_create',
             ],
             [
                 'id'    => 3,
-                'title' => 'role_access',
+                'title' => 'permission_edit',
             ],
             [
                 'id'    => 4,
-                'title' => 'user_create',
+                'title' => 'permission_show',
             ],
             [
                 'id'    => 5,
-                'title' => 'user_edit',
+                'title' => 'permission_delete',
             ],
             [
                 'id'    => 6,
-                'title' => 'user_show',
+                'title' => 'permission_access',
             ],
             [
                 'id'    => 7,
-                'title' => 'user_delete',
+                'title' => 'role_create',
             ],
             [
                 'id'    => 8,
-                'title' => 'user_access',
+                'title' => 'role_edit',
+            ],
+            [
+                'id'    => 9,
+                'title' => 'role_show',
+            ],
+            [
+                'id'    => 10,
+                'title' => 'role_delete',
+            ],
+            [
+                'id'    => 11,
+                'title' => 'role_access',
+            ],
+            [
+                'id'    => 12,
+                'title' => 'user_create',
+            ],
+            [
+                'id'    => 13,
+                'title' => 'user_edit',
             ],
             [
                 'id'    => 14,
+                'title' => 'user_show',
+            ],
+            [
+                'id'    => 15,
+                'title' => 'user_delete',
+            ],
+            [
+                'id'    => 16,
+                'title' => 'user_access',
+            ],
+            [
+                'id'    => 17,
+                'title' => 'subject_access',
+            ],
+            [
+                'id'    => 18,
+                'title' => 'chapter_access',
+            ],
+            [
+                'id'    => 19,
+                'title' => 'course_access',
+            ],
+            [
+                'id'    => 20,
                 'title' => 'profile_password_edit',
             ],
         ];
