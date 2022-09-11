@@ -28,6 +28,7 @@
                             <th> Name</th>
                             <th> Thumbnail</th>
                             <th> Description</th>
+                            <th> Chapters</th>
                             <th> Action</th>
                         </tr>
                     </thead>
@@ -37,8 +38,9 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $subject->name }}</td>
                                 <td><img class="img-thumbnail" src="{{ asset($subject->thumbnail) }}"
-                                        alt="{{ $subject->name }}" width="200"></td>
+                                        alt="{{ $subject->name }}" width="50"></td>
                                 <td>{{ $subject->description }}</td>
+                                <td><a href="{{ route('admin.subject.show', $subject->id) }}">View</a></td>
                                 <td>
                                     <a class="btn btn-xs btn-info" href="{{ route('admin.subject.edit', $subject->id) }}">
                                         {{ trans('global.edit') }}

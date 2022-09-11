@@ -97,7 +97,6 @@
                                 <p class="card-text"><small
                                         class="text-muted">{{ $chapter->created_at->diffForHumans() }}</small></p>
                             </div>
-
                         </div>
                     </div>
                 </div>
