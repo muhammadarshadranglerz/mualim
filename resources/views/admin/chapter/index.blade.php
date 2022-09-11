@@ -25,9 +25,10 @@
                     <thead>
                         <tr>
                             <th> #</th>
-                            <th> Name</th>
-                            <th> Description</th>
                             <th> Subject Name</th>
+                            <th> Chapter Name</th>
+                            <th> Description</th>
+                            <th> Details</th>
                             <th> Action</th>
                         </tr>
                     </thead>
@@ -35,9 +36,10 @@
                         @foreach ($chapters as $key => $chapter)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
+                                <td>{{ $chapter->subject->name }}</td>
                                 <td>{{ $chapter->name }}</td>
                                 <td>{{ $chapter->description }}</td>
-                                <td>{{ $chapter->subject->name }}</td>
+                                <td><a href="{{ route('admin.chapter.show', $chapter->id) }}">See More</a></td>
                                 <td>
                                     <a class="btn btn-xs btn-info" href="{{ route('admin.chapter.edit', $chapter->id) }}">
                                         {{ trans('global.edit') }}

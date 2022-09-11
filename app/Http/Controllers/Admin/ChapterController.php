@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Chapter;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Models\ChapterContent;
 use App\Models\Subject;
+use Illuminate\Http\Request;
+use App\Models\ChapterContent;
+use App\Http\Controllers\Controller;
 
 class ChapterController extends Controller
 {
@@ -84,6 +84,8 @@ class ChapterController extends Controller
      */
     public function show($id)
     {
+        $chapter = Chapter::findOrFail($id);
+        return view('admin.chapter.single', compact('chapter'));
     }
 
     /**
