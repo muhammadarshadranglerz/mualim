@@ -44,9 +44,9 @@
                             $icon = '<i class="fa fas fa-video txt-primary"></i>';
                         } elseif (in_array($attachmentExtension, ['7Z', 'RAR', 'ZIP'])) {
                             $icon = '<i class="fa fa-file-archive-o txt-secondary"></i>';
-                        } elseif (in_array($attachmentExtension, ['TXT', 'DOC', 'DOCX'])) {
+                        } elseif (in_array($attachmentExtension, ['TXT', 'DOC', 'DOCX', 'PPT', 'PPTX'])) {
                             $icon = '<i class="fa fa-file-text-o txt-info"></i>';
-                        } elseif (in_array($attachmentExtension, ['PPT', 'PPTX'])) {
+                        } elseif (in_array($attachmentExtension, ['PDF'])) {
                             $icon = '<i class="fa fa-file-pdf-o txt-info"></i>';
                         } elseif (in_array($attachmentExtension, ['HTML', 'HTM'])) {
                             $icon = '<i class="fa-brands fa-chrome txt-inf"></i>';
@@ -68,8 +68,13 @@
                                         style="font-size:7rem;width: fit-content;">
                                         {!! isset($icon) ? $icon : '' !!}
                                     </div>
-                                    <div class="align-self-center text-secondary">
-                                        Attachment
+                                    <div class="mw-100 p-1 align-self-center text-secondary">
+                                        @php
+                                            $attachmentName = basename($content->file);
+                                            $attachmentName = ltrim(substr($attachmentName, strpos($attachmentName, '_') + 1));
+                                            $attachmentName = rtrim($attachmentName, '.' . pathinfo($content->file, PATHINFO_EXTENSION));
+                                        @endphp
+                                        {{ $attachmentName }}
                                     </div>
                                 </div>
 
