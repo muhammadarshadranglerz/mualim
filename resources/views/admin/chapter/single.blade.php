@@ -37,7 +37,7 @@
                         $attachmentExtension = trim($attachmentExtension);
                         
                         if (in_array($attachmentExtension, ['JPEG', 'PNG', 'GIF', 'TIFF', 'AI'])) {
-                            $icon = '<i class="fa fa-file-image-o txt-primary">
+                            $icon = '<i class="fa fa-file-image-o txt-success">
                             <i class="fa fa-download" aria-hidden="true"></i>
                             </i>';
                         } elseif (in_array($attachmentExtension, ['MP4', 'MOV', 'WMV', 'AVI', 'AVCHD', 'FLV', 'F4V', 'SWF', 'MKV', 'WEBM'])) {
@@ -45,19 +45,19 @@
                         } elseif (in_array($attachmentExtension, ['7Z', 'RAR', 'ZIP'])) {
                             $icon = '<i class="fa fa-file-archive-o txt-secondary"></i>';
                         } elseif (in_array($attachmentExtension, ['TXT', 'DOC', 'DOCX', 'PPT', 'PPTX'])) {
-                            $icon = '<i class="fa fa-file-text-o txt-info"></i>';
+                            $icon = '<i class="fa fa-file-text-o txt-fb"></i>';
                         } elseif (in_array($attachmentExtension, ['PDF'])) {
-                            $icon = '<i class="fa fa-file-pdf-o txt-info"></i>';
+                            $icon = '<i class="fa fa-file-pdf-o txt-danger"></i>';
                         } elseif (in_array($attachmentExtension, ['HTML', 'HTM'])) {
-                            $icon = '<i class="fa-brands fa-chrome txt-inf"></i>';
+                            $icon = '<i class="fa-brands fa-chrome txt-google-plus"></i>';
                         } elseif (in_array($attachmentExtension, ['XLS', 'XLSX'])) {
-                            $icon = '<i class="fa fa-file-excel-o txt-inf"></i>';
+                            $icon = '<i class="fa fa-file-excel-o txt-primary"></i>';
                         } elseif (in_array($attachmentExtension, ['CSV'])) {
-                            $icon = '<i class="fa-solid fa-file-csv txt-inf"></i>';
+                            $icon = '<i class="fa-solid fa-file-csv txt-success"></i>';
                         } elseif (in_array($attachmentExtension, ['TXT'])) {
-                            $icon = '<i class="fa-solid fa-file-csv txt-inf"></i>';
+                            $icon = '<i class="fa-solid fa-file-csv txt-light"></i>';
                         } else {
-                            $icon = '<i class="fa-solid fa-solid fa-file txt-inf"></i>';
+                            $icon = '<i class="fa-solid fa-solid fa-file txt-info"></i>';
                         }
                     @endphp
                     <div class="col-md-6 col-12">

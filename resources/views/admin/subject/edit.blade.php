@@ -21,7 +21,8 @@
                 </div>
                 <div class="form-group">
                     <label class="required" for="thumbnail">Thumbnail</label>
-                    <input type="file" class="form-control {{ $errors->has('thumbnail') ? 'is-invalid' : '' }}" type="text"
+                    <input accept=".png, .jpg, .jpeg" type="file"
+                        class="form-control {{ $errors->has('thumbnail') ? 'is-invalid' : '' }}" type="text"
                         name="thumbnail" id="thumbnail">
                     @if ($errors->has('thumbnail'))
                         <div class="invalid-feedback">

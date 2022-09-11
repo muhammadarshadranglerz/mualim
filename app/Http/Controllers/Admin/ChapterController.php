@@ -151,7 +151,7 @@ class ChapterController extends Controller
             $file->move($destinationPath, $fileName);
             $inputs += ['file' => 'uploads/' . $fileName];
         }
-        $chapter->update($inputs);
+        $chapterContent->update($inputs);
         $chapter->update($request->only('name', 'description', 'subject_id'));
         return redirect()->route('admin.chapter.index');
     }

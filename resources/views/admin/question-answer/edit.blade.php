@@ -2,16 +2,17 @@
 @section('content')
     <div class="card">
         <div class="card-header">
-            {{ trans('Create Subject') }}
+            {{ trans('Edit Subject') }}
         </div>
 
         <div class="card-body">
-            <form method="POST" action="{{ route('admin.subject.store') }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('admin.subject.update', [$subject->id]) }}" enctype="multipart/form-data">
+                @method('PUT')
                 @csrf
                 <div class="form-group">
                     <label class="required" for="name">Name</label>
                     <input class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" type="text" name="name"
-                        id="name" value="{{ old('name', '') }}" required>
+                        id="name" value="{{ $subject->name }}" required>
                     @if ($errors->has('name'))
                         <div class="invalid-feedback">
                             {{ $errors->first('name') }}
@@ -20,9 +21,8 @@
                 </div>
                 <div class="form-group">
                     <label class="required" for="thumbnail">Thumbnail</label>
-                    <input accept=".png, .jpg, .jpeg" type="file"
-                        class="form-control {{ $errors->has('thumbnail') ? 'is-invalid' : '' }}" type="text"
-                        name="thumbnail" id="thumbnail" required>
+                    <input type="file" class="form-control {{ $errors->has('thumbnail') ? 'is-invalid' : '' }}" type="text"
+                        name="thumbnail" id="thumbnail">
                     @if ($errors->has('thumbnail'))
                         <div class="invalid-feedback">
                             {{ $errors->first('thumbnail') }}
@@ -32,17 +32,16 @@
                 <div class="form-group">
                     <label class="required" for="description">Description</label>
                     <input class="form-control {{ $errors->has('description') ? 'is-invalid' : '' }}" type="text"
-                        name="description" id="description" value="{{ old('description', '') }}" required>
+                        name="description" id="description" value="{{ $subject->description }}" required>
                     @if ($errors->has('description'))
                         <div class="invalid-feedback">
                             {{ $errors->first('description') }}
                         </div>
                     @endif
                 </div>
-
                 <div class="form-group">
                     <button class="btn btn-danger" type="submit">
-                        {{ trans('global.save') }}
+                        {{ trans('global.update') }}
                     </button>
                 </div>
             </form>

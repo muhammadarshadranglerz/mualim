@@ -26,8 +26,7 @@
                 <div class="form-group">
                     <label class="required" for="description">Description</label>
                     <input class="form-control {{ $errors->has('description') ? 'is-invalid' : '' }}" type="text"
-                        name="description" id="description"
-                        value="{{ $chapter->description }}" required>
+                        name="description" id="description" value="{{ $chapter->description }}" required>
                     @if ($errors->has('description'))
                         <div class="invalid-feedback">
                             {{ $errors->first('description') }}
@@ -37,8 +36,7 @@
                 <div class="form-group">
                     <label class="required" for="title">Lecture Title</label>
                     <input class="form-control {{ $errors->has('title') ? 'is-invalid' : '' }}" type="text"
-                        name="title" id="title" value="{{ $content->title }}"
-                        required>
+                        name="title" id="title" value="{{ $content->title }}" required>
                     @if ($errors->has('title'))
                         <div class="invalid-feedback">
                             {{ $errors->first('title') }}
@@ -58,7 +56,7 @@
                 <div class="form-group">
                     <label class="required" for="video">Lecture Video</label>
                     <input type="file" class="form-control {{ $errors->has('video') ? 'is-invalid' : '' }}"
-                        type="text" name="video" id="video">
+                        type="text" name="video" id="video" accept="video/*">
                     @if ($errors->has('video'))
                         <div class="invalid-feedback">
                             {{ $errors->first('video') }}
@@ -68,7 +66,8 @@
                 <div class="form-group">
                     <label class="required" for="file">Lecture Attachments</label>
                     <input type="file" class="form-control {{ $errors->has('file') ? 'is-invalid' : '' }}"
-                        type="text" name="file" id="file">
+                        type="text" name="file" id="file"
+                        accept=".pdf,ppt,pptx,.doc,.docx,.png, .jpg, .jpeg,.doc,.docx,.xml,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
                     @if ($errors->has('file'))
                         <div class="invalid-feedback">
                             {{ $errors->first('file') }}
