@@ -140,6 +140,7 @@
                                     <ul class="nav-submenu menu-content">
                                         <li><a href="{{route('admin.subject.index') }}">Subject</a></li>
                                         <li><a href="{{route('admin.chapter.index') }}">Chapter</a></li>
+                                        <li><a href="{{route('admin.question-answer.index') }}">Quizzes</a></li>
                                     </ul>
                                 </li>
 
