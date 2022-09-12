@@ -33,4 +33,8 @@ class Chapter extends Model
     {
         return $this->hasMany(ChapterContent::class, 'chapter_id');
     }
+    public function quiz()
+    {
+        return $this->hasMany(Question::class, 'chapter_id');
+    }
 }

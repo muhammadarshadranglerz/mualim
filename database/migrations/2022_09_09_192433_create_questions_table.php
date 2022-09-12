@@ -23,7 +23,7 @@ class CreateQuestionsTable extends Migration
             $table->string("third_option");
             $table->string("fourth_option");
             $table->unsignedInteger("correct");
-            $table->foreign('chapter_id')->references('id')->on('chapters');
+            $table->foreign('chapter_id')->references('id')->on('chapters')->onDelete('cascade');
             $table->timestamps();
         });
     }
