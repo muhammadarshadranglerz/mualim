@@ -73,9 +73,10 @@ class SubjectController extends Controller
      */
     public function show($id)
     {
+        $subjectId=$id;
         $subject = Subject::findOrFail($id);
         $chapters = $subject->chapter;
-        return view('admin.subject.single', compact("chapters"));
+        return view('admin.subject.single', compact("chapters","subjectId"));
     }
 
     /**

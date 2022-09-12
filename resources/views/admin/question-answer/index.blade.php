@@ -3,10 +3,10 @@
     <div style="margin-bottom: 10px;" class="row">
         <div class="col-lg-6">
             <a class="btn btn-success d-none" href="{{ route('admin.question-answer.create') }}">
-                {{ trans('Add Question') }}
+                {{ trans('Add MCQs') }}
             </a>
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                Add Question
+                Add MCQs
             </button>
         </div>
         <div class="col-lg-6">

@@ -131,7 +131,7 @@
                 </div>
                 <div class="col-6 d-flex">
                     <button type="button" class="btn btn-primary ms-auto" data-toggle="modal" data-target="#exampleModal">
-                        Add Question
+                        Add MCQs
                     </button>
                 </div>
             </div>

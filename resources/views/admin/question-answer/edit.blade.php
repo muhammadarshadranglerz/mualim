@@ -2,7 +2,7 @@
 @section('content')
     <div class="card">
         <div class="card-header">
-            {{ trans('Update Question') }}
+            {{ trans('Update MCQs') }}
         </div>
         <div class="card-body ">
             <form method="POST" class="row" action="{{ route('admin.question-answer.update', $question->id) }}"
