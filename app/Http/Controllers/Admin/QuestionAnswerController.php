@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use App\Models\Question;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Models\Chapter;
+use App\Models\QuestionOption;
 
 class QuestionAnswerController extends Controller
 {
@@ -15,6 +18,9 @@ class QuestionAnswerController extends Controller
     public function index()
     {
         //
+        $chapters = Chapter::all();
+        $questions = Question::all();
+        return view('admin.question-answer.index', compact('questions','chapters'));
     }
 
     /**
@@ -25,6 +31,9 @@ class QuestionAnswerController extends Controller
     public function create()
     {
         //
+        $chapters = Chapter::all();
+
+        return view("admin.question-answer.create", compact('chapters'));
     }
 
     /**
@@ -36,6 +45,22 @@ class QuestionAnswerController extends Controller
     public function store(Request $request)
     {
         //
+        $request->validate(
+            [
+                "question" => "required|string|max:100",
+                "details" => "required|string|max:255",
+                "first_option" => "required|string|max:255",
+                "second_option" => "required|string|max:255",
+                "third_option" => "required|string|max:255",
+                "fourth_option" => "required|string|max:255",
+                "correct" => "required|integer",
+                "chapter_id" => "required|integer",
+            ]
+        );
+        Question::create(
+            $request->only('question', 'details', 'chapter_id', 'first_option', 'second_option', 'third_option', 'fourth_option', 'correct')
+        );
+        return redirect()->route("admin.question-answer.index")->with('success', "Question Added");
     }
 
     /**
@@ -47,6 +72,8 @@ class QuestionAnswerController extends Controller
     public function show($id)
     {
         //
+        $question=Question::findOrFail($id);
+        return view('admin.question-answer.single',compact('question'));
     }
 
     /**
@@ -58,6 +85,10 @@ class QuestionAnswerController extends Controller
     public function edit($id)
     {
         //
+        $question = Question::findOrFail($id);
+        $chapters = Chapter::all();
+
+        return view("admin.question-answer.edit", ['chapters' => $chapters, 'question' => $question]);
     }
 
     /**
@@ -70,6 +101,22 @@ class QuestionAnswerController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $request->validate(
+            [
+                "question" => "required|string|max:100",
+                "details" => "required|string|max:255",
+                "first_option" => "required|string|max:255",
+                "second_option" => "required|string|max:255",
+                "third_option" => "required|string|max:255",
+                "fourth_option" => "required|string|max:255",
+                "correct" => "required|integer",
+            ]
+        );
+        Question::find($id)
+            ->update(
+                $request->only('question', 'details', 'first_option', 'second_option', 'third_option', 'fourth_option', 'correct')
+            );
+        return redirect()->route("admin.question-answer.index")->with('success', "Question Updated");
     }
 
     /**
@@ -81,5 +128,8 @@ class QuestionAnswerController extends Controller
     public function destroy($id)
     {
         //
+        Question::destroy($id);
+        // QuestionOption::where('question_id', $id)->first()->delete();
+        return redirect()->route("admin.question-answer.index")->with('success', "Question Deleted");
     }
 }

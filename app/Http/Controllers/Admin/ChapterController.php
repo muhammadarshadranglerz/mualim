@@ -7,6 +7,7 @@ use App\Models\Subject;
 use Illuminate\Http\Request;
 use App\Models\ChapterContent;
 use App\Http\Controllers\Controller;
+use App\Models\Question;
 
 class ChapterController extends Controller
 {
@@ -85,7 +86,8 @@ class ChapterController extends Controller
     public function show($id)
     {
         $chapter = Chapter::findOrFail($id);
-        return view('admin.chapter.single', compact('chapter'));
+        $questions = Question::where('chapter_id', '=', $id)->get();
+        return view('admin.chapter.single', ['chapter' => $chapter, 'questions' => $questions]);
     }
 
     /**

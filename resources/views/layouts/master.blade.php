@@ -167,7 +167,8 @@
                                             @can('subject_access')
                                                 <li><a href="{{ route('admin.chapter.index') }}">Chapter</a></li>
                                             @endcan
-                                        </ul>
+                                            <li><a href="{{route('admin.question-answer.index') }}">Quizzes</a></li>
+                                    </ul>
                                     </li>
                                 @endcan
 
