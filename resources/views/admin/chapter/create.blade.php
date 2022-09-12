@@ -8,6 +8,7 @@
         <div class="card-body">
             <form method="POST" action="{{ route('admin.chapter.store') }}" enctype="multipart/form-data">
                 @csrf
+                <input type="hidden" name="submittedFromEdit" value="1">
                 <div class="form-group">
                     <label class="required" for="name">Name</label>
                     <input class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" type="text" name="name"

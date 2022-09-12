@@ -56,6 +56,7 @@ class ChapterController extends Controller
                 "video.mimetypes" => "Video formate is not supported",
             ]
         );
+        
         $inputs = $request->only('title', 'note');
         $destinationPath = public_path('uploads');
         if ($request->file('video')) {
@@ -70,11 +71,16 @@ class ChapterController extends Controller
             $file->move($destinationPath, $fileName);
             $inputs += ['file' => 'uploads/' . $fileName];
         }
+        // dd($request->only('name', 'description', 'subject_id'));
+        // dd($inputs);
         $chapter = Chapter::create($request->only('name', 'description', 'subject_id'));
         $inputs += ['chapter_id' => $chapter->id];
         ChapterContent::create($inputs);
+        if($request->only("submittedFromEdit")){
+            return redirect()->route('admin.chapter.index');
+        }
         // $chapter->content()->save($chapter);
-        return redirect()->route('admin.chapter.index');
+        return redirect()->back();
     }
 
     /**

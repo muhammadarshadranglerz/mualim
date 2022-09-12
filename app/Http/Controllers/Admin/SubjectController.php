@@ -76,6 +76,7 @@ class SubjectController extends Controller
         $subjectId=$id;
         $subject = Subject::findOrFail($id);
         $chapters = $subject->chapter;
+        // dd($chapters);
         return view('admin.subject.single', compact("chapters","subjectId"));
     }
 

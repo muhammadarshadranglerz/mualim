@@ -10,12 +10,13 @@
             </button>
         </div>
     </div>
+   
     <div class="card">
         <div class="card-body">
             <div class="container">
-                <div class="text-center d-flex gap-3">
+                <div class="text-center d-flex  flex-wrap">
                     @foreach ($chapters as $chapter)
-                        <div class="col-1 col-md-2 col-lg-4">
+                        <div class="col-1 col-md-2 col-lg-4 px-2">
                             <div class="card">
                                 <div class="card-header bg-gray-400">
                                     <h6>{{ $chapter->name }}</h6>
