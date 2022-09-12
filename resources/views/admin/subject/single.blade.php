@@ -10,23 +10,23 @@
             </button>
         </div>
     </div>
-   
+
     <div class="card">
         <div class="card-body">
             <div class="container">
                 <div class="text-center d-flex  flex-wrap">
                     @foreach ($chapters as $chapter)
-                        <div class="col-1 col-md-2 col-lg-4 px-2">
-                            <div class="card">
-                                <div class="card-header bg-gray-400">
+                        <div class="col-12 col-md-6 col-lg-4 p-2">
+                            <div class="d-flex flex-column h-100 justify-content-between  bg-gray-100">
+                                <div class="p-3 bg-gray-400">
                                     <h6>{{ $chapter->name }}</h6>
                                 </div>
-                                <div class="card-body">{{ $chapter->description }}</div>
-                                <a href="{{ route('admin.chapter.show', $chapter->id) }}" class="txt-dark">
-                                    <div class="card-footer bg-gray-200 py-2">
+                                <div class="p-3 bg-gray-100">{{ $chapter->description }}</div>
+                                <div class="p-2 bg-gray-200 py-2">
+                                    <a href="{{ route('admin.chapter.show', $chapter->id) }}" class="txt-dark m-0">
                                         View
-                                    </div>
-                                </a>
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     @endforeach
@@ -57,7 +57,7 @@
                             <input class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" type="text"
                                 name="name" id="name" value="{{ old('name', '') }}" required>
                             @if ($errors->has('name'))
-                                <div class="invalid-feedback">
+                                <div class="txt-danger">
                                     {{ $errors->first('name') }}
                                 </div>
                             @endif
@@ -67,7 +67,7 @@
                             <input class="form-control {{ $errors->has('description') ? 'is-invalid' : '' }}" type="text"
                                 name="description" id="description" value="{{ old('description', '') }}" required>
                             @if ($errors->has('description'))
-                                <div class="invalid-feedback">
+                                <div class="txt-danger">
                                     {{ $errors->first('description') }}
                                 </div>
                             @endif
@@ -77,7 +77,7 @@
                             <input class="form-control {{ $errors->has('title') ? 'is-invalid' : '' }}" type="text"
                                 name="title" id="title" value="{{ old('title', '') }}" required>
                             @if ($errors->has('title'))
-                                <div class="invalid-feedback">
+                                <div class="txt-danger">
                                     {{ $errors->first('title') }}
                                 </div>
                             @endif
@@ -87,7 +87,7 @@
                             <input class="form-control {{ $errors->has('note') ? 'is-invalid' : '' }}" type="text"
                                 name="note" id="note" value="{{ old('note', '') }}" required>
                             @if ($errors->has('note'))
-                                <div class="invalid-feedback">
+                                <div class="txt-danger">
                                     {{ $errors->first('note') }}
                                 </div>
                             @endif
@@ -98,7 +98,7 @@
                                 class="form-control {{ $errors->has('video') ? 'is-invalid' : '' }}" type="text"
                                 name="video" id="video">
                             @if ($errors->has('video'))
-                                <div class="invalid-feedback">
+                                <div class="txt-danger">
                                     {{ $errors->first('video') }}
                                 </div>
                             @endif
@@ -110,7 +110,7 @@
                                 class="form-control {{ $errors->has('file') ? 'is-invalid' : '' }}" type="text"
                                 name="file" id="file">
                             @if ($errors->has('file'))
-                                <div class="invalid-feedback">
+                                <div class="txt-danger">
                                     {{ $errors->first('file') }}
                                 </div>
                             @endif

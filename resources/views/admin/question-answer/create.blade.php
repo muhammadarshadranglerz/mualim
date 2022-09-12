@@ -1,5 +1,7 @@
 @extends('layouts.master')
 @section('content')
+@if ($chapters->count())
+
     <div class="card">
         <div class="card-header">
             {{ trans('Add MCQs') }}
@@ -19,7 +21,7 @@
 
                     </select>
                     @if ($errors->has('correct'))
-                        <div class="invalid-feedback">
+                        <div class="txt-danger">
                             {{ $errors->first('correct') }}
                         </div>
                     @endif
@@ -29,7 +31,7 @@
                     <input class="form-control {{ $errors->has('question') ? 'is-invalid' : '' }}" type="text"
                         name="question" id="question" value="{{ old('question', '') }}" required>
                     @if ($errors->has('question'))
-                        <div class="invalid-feedback">
+                        <div class="txt-danger">
                             {{ $errors->first('question') }}
                         </div>
                     @endif
@@ -39,7 +41,7 @@
                     <input class="form-control {{ $errors->has('details') ? 'is-invalid' : '' }}" type="text"
                         name="details" id="details" value="{{ old('details', '') }}" required>
                     @if ($errors->has('details'))
-                        <div class="invalid-feedback">
+                        <div class="txt-danger">
                             {{ $errors->first('details') }}
                         </div>
                     @endif
@@ -49,7 +51,7 @@
                     <input class="form-control {{ $errors->has('first_option') ? 'is-invalid' : '' }}" type="text"
                         name="first_option" id="first-option" value="{{ old('first_option', '') }}" required>
                     @if ($errors->has('first_option'))
-                        <div class="invalid-feedback">
+                        <div class="txt-danger">
                             {{ $errors->first('first_option') }}
                         </div>
                     @endif
@@ -59,7 +61,7 @@
                     <input class="form-control {{ $errors->has('second_option') ? 'is-invalid' : '' }}" type="text"
                         name="second_option" id="second-option" value="{{ old('second_option', '') }}" required>
                     @if ($errors->has('second_option'))
-                        <div class="invalid-feedback">
+                        <div class="txt-danger">
                             {{ $errors->first('second_option') }}
                         </div>
                     @endif
@@ -69,7 +71,7 @@
                     <input class="form-control {{ $errors->has('third_option') ? 'is-invalid' : '' }}" type="text"
                         name="third_option" id="third-option" value="{{ old('third_option', '') }}" required>
                     @if ($errors->has('third_option'))
-                        <div class="invalid-feedback">
+                        <div class="txt-danger">
                             {{ $errors->first('third_option') }}
                         </div>
                     @endif
@@ -79,7 +81,7 @@
                     <input class="form-control {{ $errors->has('fourth_option') ? 'is-invalid' : '' }}" type="text"
                         name="fourth_option" id="fourth-option" value="{{ old('fourth_option', '') }}" required>
                     @if ($errors->has('fourth_option'))
-                        <div class="invalid-feedback">
+                        <div class="txt-danger">
                             {{ $errors->first('fourth_option') }}
                         </div>
                     @endif
@@ -94,7 +96,7 @@
                         <option value="4" @if (old('correct') == 4) selected @endif>D</option>
                     </select>
                     @if ($errors->has('correct'))
-                        <div class="invalid-feedback">
+                        <div class="txt-danger">
                             {{ $errors->first('correct') }}
                         </div>
                     @endif
@@ -107,4 +109,7 @@
             </form>
         </div>
     </div>
+    @else
+    Chapter in not Available.(first add a chapter to add a qustion)
+@endif
 @endsection

@@ -14,7 +14,7 @@
                     <input class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" type="text" name="name"
                         id="name" value="{{ $subject->name }}" required>
                     @if ($errors->has('name'))
-                        <div class="invalid-feedback">
+                        <div class="txt-danger">
                             {{ $errors->first('name') }}
                         </div>
                     @endif
@@ -25,7 +25,7 @@
                         class="form-control {{ $errors->has('thumbnail') ? 'is-invalid' : '' }}" type="text"
                         name="thumbnail" id="thumbnail">
                     @if ($errors->has('thumbnail'))
-                        <div class="invalid-feedback">
+                        <div class="txt-danger">
                             {{ $errors->first('thumbnail') }}
                         </div>
                     @endif
@@ -35,7 +35,7 @@
                     <input class="form-control {{ $errors->has('description') ? 'is-invalid' : '' }}" type="text"
                         name="description" id="description" value="{{ $subject->description }}" required>
                     @if ($errors->has('description'))
-                        <div class="invalid-feedback">
+                        <div class="txt-danger">
                             {{ $errors->first('description') }}
                         </div>
                     @endif

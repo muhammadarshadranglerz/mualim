@@ -271,6 +271,8 @@
     {{-- <script src="{{asset('./assets/js/datepicker/date-picker/datepicker.custom.js')}}"></script> --}}
     <!-- Plugins JS Ends-->
     <!-- Theme js-->
+    @yield('footer.script')
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
     <script src="{{ asset('./assets/js/script.js') }}"></script>
     <!-- <script src="{{ asset('../assets/js/theme-customizer/customizer.js') }}"></script> -->

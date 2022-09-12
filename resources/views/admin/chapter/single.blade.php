@@ -139,12 +139,20 @@
                 <div class="row">
                     @foreach ($questions as $question)
                         <div class="col-12">
-                            <h3 class="py-3">Q. {{ $question->question }}</h3>
+                            <h3 class="py-3">{{ $loop->iteration . ' . ' . $question->question }}</h3>
                         </div>
-                        <div class="col-md-3 col-6 p-3 @php echo $question->correct == 1 ?'txt-primary font-weight-bold':'';@endphp">A. {{ $question->first_option }}</div>
-                        <div class="col-md-3 col-6 p-3 @php echo $question->correct == 2 ?'txt-primary font-weight-bold':'';@endphp">B. {{ $question->second_option }}</div>
-                        <div class="col-md-3 col-6 p-3 @php echo $question->correct == 3 ?'txt-primary font-weight-bold':'';@endphp">C. {{ $question->third_option }}</div>
-                        <div class="col-md-3 col-6 p-3 @php echo $question->correct == 4 ?'txt-primary font-weight-bold':'';@endphp">D. {{ $question->fourth_option }}</div>
+                        <div
+                            class="col-md-3 col-6 p-3 @php echo $question->correct == 1 ?'txt-primary font-weight-bold':''; @endphp">
+                            A. {{ $question->first_option }}</div>
+                        <div
+                            class="col-md-3 col-6 p-3 @php echo $question->correct == 2 ?'txt-primary font-weight-bold':''; @endphp">
+                            B. {{ $question->second_option }}</div>
+                        <div
+                            class="col-md-3 col-6 p-3 @php echo $question->correct == 3 ?'txt-primary font-weight-bold':''; @endphp">
+                            C. {{ $question->third_option }}</div>
+                        <div
+                            class="col-md-3 col-6 p-3 @php echo $question->correct == 4 ?'txt-primary font-weight-bold':''; @endphp">
+                            D. {{ $question->fourth_option }}</div>
                     @endforeach
                 </div>
             </div>
@@ -167,13 +175,13 @@
                     <form method="POST" class="row" action="{{ route('admin.question-answer.store') }}"
                         enctype="multipart/form-data">
                         @csrf
-                        <input type="hidden" name="chapter_id" value="{{$chapter->id}}">
+                        <input type="hidden" name="chapter_id" value="{{ $chapter->id }}">
                         <div class="form-group">
                             <label class="required" for="question">Question</label>
                             <input class="form-control {{ $errors->has('question') ? 'is-invalid' : '' }}" type="text"
                                 name="question" id="question" value="{{ old('question', '') }}" required>
                             @if ($errors->has('question'))
-                                <div class="invalid-feedback">
+                                <div class="txt-danger">
                                     {{ $errors->first('question') }}
                                 </div>
                             @endif
@@ -183,7 +191,7 @@
                             <input class="form-control {{ $errors->has('details') ? 'is-invalid' : '' }}" type="text"
                                 name="details" id="details" value="{{ old('details', '') }}" required>
                             @if ($errors->has('details'))
-                                <div class="invalid-feedback">
+                                <div class="txt-danger">
                                     {{ $errors->first('details') }}
                                 </div>
                             @endif
@@ -194,7 +202,7 @@
                                 type="text" name="first_option" id="first-option"
                                 value="{{ old('first_option', '') }}" required>
                             @if ($errors->has('first_option'))
-                                <div class="invalid-feedback">
+                                <div class="txt-danger">
                                     {{ $errors->first('first_option') }}
                                 </div>
                             @endif
@@ -205,7 +213,7 @@
                                 type="text" name="second_option" id="second-option"
                                 value="{{ old('second_option', '') }}" required>
                             @if ($errors->has('second_option'))
-                                <div class="invalid-feedback">
+                                <div class="txt-danger">
                                     {{ $errors->first('second_option') }}
                                 </div>
                             @endif
@@ -216,7 +224,7 @@
                                 type="text" name="third_option" id="third-option"
                                 value="{{ old('third_option', '') }}" required>
                             @if ($errors->has('third_option'))
-                                <div class="invalid-feedback">
+                                <div class="txt-danger">
                                     {{ $errors->first('third_option') }}
                                 </div>
                             @endif
@@ -227,7 +235,7 @@
                                 type="text" name="fourth_option" id="fourth-option"
                                 value="{{ old('fourth_option', '') }}" required>
                             @if ($errors->has('fourth_option'))
-                                <div class="invalid-feedback">
+                                <div class="txt-danger">
                                     {{ $errors->first('fourth_option') }}
                                 </div>
                             @endif
@@ -242,7 +250,7 @@
                                 <option value="4" @if (old('correct') == 4) selected @endif>D</option>
                             </select>
                             @if ($errors->has('correct'))
-                                <div class="invalid-feedback">
+                                <div class="txt-danger">
                                     {{ $errors->first('correct') }}
                                 </div>
                             @endif
@@ -258,4 +266,14 @@
             </div>
         </div>
     </div>
+@endsection
+@section('footer.script')
+    <script>
+        $(document).ready(function() {
+            // $(".mtz-download-btn")
+        })
+        setTimeout(() => {
+            $(".mtz-download-btn").removeClass("standart_position");
+        }, 2000);
+    </script>
 @endsection

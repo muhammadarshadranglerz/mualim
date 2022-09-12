@@ -14,7 +14,7 @@
                 <label class="required" for="name">{{ trans('cruds.user.fields.name') }}</label>
                 <input class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" type="text" name="name" id="name" value="{{ old('name', $user->name) }}" required>
                 @if($errors->has('name'))
-                    <div class="invalid-feedback">
+                    <div class="txt-danger">
                         {{ $errors->first('name') }}
                     </div>
                 @endif
@@ -24,7 +24,7 @@
                 <label class="required" for="email">{{ trans('cruds.user.fields.email') }}</label>
                 <input class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}" type="email" name="email" id="email" value="{{ old('email', $user->email) }}" required>
                 @if($errors->has('email'))
-                    <div class="invalid-feedback">
+                    <div class="txt-danger">
                         {{ $errors->first('email') }}
                     </div>
                 @endif
@@ -34,7 +34,7 @@
                 <label class="required" for="password">{{ trans('cruds.user.fields.password') }}</label>
                 <input class="form-control {{ $errors->has('password') ? 'is-invalid' : '' }}" type="password" name="password" id="password">
                 @if($errors->has('password'))
-                    <div class="invalid-feedback">
+                    <div class="txt-danger">
                         {{ $errors->first('password') }}
                     </div>
                 @endif
@@ -52,7 +52,7 @@
                     @endforeach
                 </select>
                 @if($errors->has('roles'))
-                    <div class="invalid-feedback">
+                    <div class="txt-danger">
                         {{ $errors->first('roles') }}
                     </div>
                 @endif

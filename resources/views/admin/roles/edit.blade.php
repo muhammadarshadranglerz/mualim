@@ -14,7 +14,7 @@
                 <label class="required" for="title">{{ trans('cruds.role.fields.title') }}</label>
                 <input class="form-control {{ $errors->has('title') ? 'is-invalid' : '' }}" type="text" name="title" id="title" value="{{ old('title', $role->title) }}" required>
                 @if($errors->has('title'))
-                    <div class="invalid-feedback">
+                    <div class="txt-danger">
                         {{ $errors->first('title') }}
                     </div>
                 @endif
@@ -32,7 +32,7 @@
                     @endforeach
                 </select>
                 @if($errors->has('permissions'))
-                    <div class="invalid-feedback">
+                    <div class="txt-danger">
                         {{ $errors->first('permissions') }}
                     </div>
                 @endif

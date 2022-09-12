@@ -18,7 +18,7 @@
                     <input class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" type="text" name="name"
                         id="name" value="{{ $chapter->name }}" required>
                     @if ($errors->has('name'))
-                        <div class="invalid-feedback">
+                        <div class="txt-danger">
                             {{ $errors->first('name') }}
                         </div>
                     @endif
@@ -28,7 +28,7 @@
                     <input class="form-control {{ $errors->has('description') ? 'is-invalid' : '' }}" type="text"
                         name="description" id="description" value="{{ $chapter->description }}" required>
                     @if ($errors->has('description'))
-                        <div class="invalid-feedback">
+                        <div class="txt-danger">
                             {{ $errors->first('description') }}
                         </div>
                     @endif
@@ -38,7 +38,7 @@
                     <input class="form-control {{ $errors->has('title') ? 'is-invalid' : '' }}" type="text"
                         name="title" id="title" value="{{ $content->title }}" required>
                     @if ($errors->has('title'))
-                        <div class="invalid-feedback">
+                        <div class="txt-danger">
                             {{ $errors->first('title') }}
                         </div>
                     @endif
@@ -48,7 +48,7 @@
                     <input class="form-control {{ $errors->has('note') ? 'is-invalid' : '' }}" type="text"
                         name="note" id="note" value="{{ $content->note }}" required>
                     @if ($errors->has('note'))
-                        <div class="invalid-feedback">
+                        <div class="txt-danger">
                             {{ $errors->first('note') }}
                         </div>
                     @endif
@@ -58,7 +58,7 @@
                     <input type="file" class="form-control {{ $errors->has('video') ? 'is-invalid' : '' }}"
                         type="text" name="video" id="video" accept="video/*">
                     @if ($errors->has('video'))
-                        <div class="invalid-feedback">
+                        <div class="txt-danger">
                             {{ $errors->first('video') }}
                         </div>
                     @endif
@@ -69,7 +69,7 @@
                         type="text" name="file" id="file"
                         accept=".pdf,ppt,pptx,.doc,.docx,.png, .jpg, .jpeg,.doc,.docx,.xml,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
                     @if ($errors->has('file'))
-                        <div class="invalid-feedback">
+                        <div class="txt-danger">
                             {{ $errors->first('file') }}
                         </div>
                     @endif
@@ -84,7 +84,7 @@
                         @endforeach
                     </select>
                     @if ($errors->has('subject_id'))
-                        <div class="invalid-feedback">
+                        <div class="txt-danger">
                             {{ $errors->first('subject_id') }}
                         </div>
                     @endif
