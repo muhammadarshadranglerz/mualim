@@ -141,10 +141,10 @@
                         <div class="col-12">
                             <h3 class="py-3">Q. {{ $question->question }}</h3>
                         </div>
-                        <div class="col-md-3 col-6 p-3">A. {{ $question->first_option }}</div>
-                        <div class="col-md-3 col-6 p-3">B. {{ $question->second_option }}</div>
-                        <div class="col-md-3 col-6 p-3">C. {{ $question->third_option }}</div>
-                        <div class="col-md-3 col-6 p-3">D. {{ $question->fourth_option }}</div>
+                        <div class="col-md-3 col-6 p-3 @php echo $question->correct == 1 ?'txt-primary font-weight-bold':'';@endphp">A. {{ $question->first_option }}</div>
+                        <div class="col-md-3 col-6 p-3 @php echo $question->correct == 2 ?'txt-primary font-weight-bold':'';@endphp">B. {{ $question->second_option }}</div>
+                        <div class="col-md-3 col-6 p-3 @php echo $question->correct == 3 ?'txt-primary font-weight-bold':'';@endphp">C. {{ $question->third_option }}</div>
+                        <div class="col-md-3 col-6 p-3 @php echo $question->correct == 4 ?'txt-primary font-weight-bold':'';@endphp">D. {{ $question->fourth_option }}</div>
                     @endforeach
                 </div>
             </div>
