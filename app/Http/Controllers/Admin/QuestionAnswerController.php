@@ -60,7 +60,7 @@ class QuestionAnswerController extends Controller
         Question::create(
             $request->only('question', 'details', 'chapter_id', 'first_option', 'second_option', 'third_option', 'fourth_option', 'correct')
         );
-        return redirect()->route("admin.question-answer.index")->with('success', "Question Added");
+        return redirect()->back()->with('success', "Question Added");
     }
 
     /**

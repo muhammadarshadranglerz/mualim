@@ -7,6 +7,12 @@
 
 
 @section('content')
+    {{-- @if ($errors)
+        @foreach ($errors->all() as $error)
+            // Do Some custom validation here to check if the "user.x" is present?
+            <div>{{ $error }}</div>
+        @endforeach
+    @endif --}}
     <div class="row">
         <div class="col-lg-6">
             <h3>Chapter Details</h3>
@@ -161,6 +167,7 @@
                     <form method="POST" class="row" action="{{ route('admin.question-answer.store') }}"
                         enctype="multipart/form-data">
                         @csrf
+                        <input type="hidden" name="chapter_id" value="{{$chapter->id}}">
                         <div class="form-group">
                             <label class="required" for="question">Question</label>
                             <input class="form-control {{ $errors->has('question') ? 'is-invalid' : '' }}" type="text"
