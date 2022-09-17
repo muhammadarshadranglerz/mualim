@@ -5,9 +5,17 @@ use Doctrine\DBAL\Schema\Index;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function(){
-    return view("home");
+
+Route::get('/optimize', function () {
+    Artisan::call('optimize:clear');
+    return 'Application cache cleared!';
 });
+
+
+Route::get('/', function(){
+    return redirect()->route('admin.home');
+});
+
 Route::get('/home', function () {
     if (session('status')) {
         return redirect()->route('admin.home')->with('status', session('status'));
