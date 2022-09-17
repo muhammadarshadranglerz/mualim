@@ -2,6 +2,7 @@
 
 Route::post('register', 'Api\AuthController@register');
 Route::post('login', 'Api\AuthController@login');
+Route::post('Register', 'Api\AuthController@register');
 Route::post('forgot_password', 'Api\AuthController@forgot_password');
 Route::get('token_confirm/{token}', 'Api\AuthController@tokenConfirm')->name('token_confirm');
 Route::get('password_change', 'Api\AuthController@submitResetPassword')->name('password_change');

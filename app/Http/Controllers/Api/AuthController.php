@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers\Api;
 
-use Validator;
-use Carbon\Carbon;
-use App\Models\User;
-use App\Mail\SendContact;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Mail\SendContact;
+use App\Models\User;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
+use Validator;
 
 class AuthController extends Controller
 {
@@ -23,10 +23,16 @@ class AuthController extends Controller
      */
     public function register(Request $request)
     {
-
         $validator = Validator::make($request->all(), [
             'name' => 'required',
+            'gender' => 'required',
+            'organization' => 'required',
+            'designation' => 'required',
+            'qualification' => 'required',
+            'experience' => 'required|integer',
+            'cnic' => 'required',
             'subject_id' => 'required',
+            'phone' => 'required|unique:users',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6',
             // 'confirm_password' => 'confirmed:password',
@@ -40,6 +46,13 @@ class AuthController extends Controller
 
         $user = User::create([
             'name' => $request->name,
+            'gender' => $request->gender,
+            'organization' => $request->organization,
+            'designation' => $request->designation,
+            'qualification' => $request->qualification,
+            'experience' => $request->experience,
+            'cnic' => $request->cnic,
+            'phone' => $request->phone,
             'email' => $request->email,
             'password' => bcrypt($request->password),
             'subject_id' => $request->subject_id,
@@ -56,6 +69,9 @@ class AuthController extends Controller
         ], 201);
     }
 
+
+
+    
     /**
      * Show the form for creating a new resource.
      *
@@ -64,7 +80,7 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'email' => 'required|email',
+            'phone' => 'required',
             'password' => 'required',
         ]);
         if ($validator->fails()) {
@@ -73,27 +89,26 @@ class AuthController extends Controller
             ], 404);
         }
 
- 
-        $user = User::where('email', $request->email)->first();
+        $user = User::where('phone', $request->phone)->first();
         if (isset($user) && $user->action == 0) {
             return response([
                 'errors' => 'Your Account has been deactivated',
             ], 404);
         }
 
-
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response([
-                'message' => ['These credentials was invalid']
+                'message' => ['These credentials was invalid'],
             ], 404);
         }
-    
-         $token = $user->createToken('my-app-token')->plainTextToken;
-         return response()->json([
+
+        $token = $user->createToken('my-app-token')->plainTextToken;
+        return response()->json([
+            'success' =>'successfully login',
             'token' => $token,
             'user' => $user,
-        ],201);
-        
+        ], 201);
+
     }
 
     /**
@@ -105,11 +120,10 @@ class AuthController extends Controller
     public function logout()
     {
 
-       DB::table('personal_access_tokens')->where(['tokenable_id' => Auth::id()])->delete();
-        return response()->json(['success' => 'logout succefully'],200);
+        DB::table('personal_access_tokens')->where(['tokenable_id' => Auth::id()])->delete();
+        return response()->json(['success' => 'logout succefully'], 200);
     }
 
-    
     public function forgot_password(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -120,7 +134,7 @@ class AuthController extends Controller
                 'errors' => $validator->errors()->all(),
             ], 404);
         }
-       
+
         $user = User::where('email', $request->email)->first();
         $data['email'] = $user->email;
         $data['token'] = Str::random(30);
@@ -132,11 +146,11 @@ class AuthController extends Controller
                 'token' => $data['token'],
                 'created_at' => Carbon::now(),
             ]);
-            return response()->json(['success'=>'Success! password reset link has been sent to your email']);
-            
+            return response()->json(['success' => 'Success! password reset link has been sent to your email']);
+
         } catch (\Swift_TransportException $e) {
             if ($e->getMessage()) {
-                return response()->json(['failed'=>'Failed! there is some issue with email providered.']);
+                return response()->json(['failed' => 'Failed! there is some issue with email providered.']);
             }
         }
     }
@@ -151,7 +165,7 @@ class AuthController extends Controller
         if ($token_confirm) {
             return view('auth.passwords.api-reset', compact('token'));
         } else {
-            return response()->json(['failed'=>'Failed! reset link has been expired']);
+            return response()->json(['failed' => 'Failed! reset link has been expired']);
         }
 
     }
@@ -170,13 +184,9 @@ class AuthController extends Controller
             ->update(['password' => Hash::make($request->password)]);
         DB::table('password_resets')->where(['email' => $request->email])->delete();
 
-       
         $user = User::where('email', $token->email)->first();
         return 'Success! password has been reset Successfully';
 
-
     }
-
-
 
 }

@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\MassDestroyUserRequest;
-use App\Http\Requests\StoreUserRequest;
-use App\Http\Requests\UpdateUserRequest;
+use Gate;
 use App\Models\Role;
 use App\Models\User;
-use Gate;
+use App\Models\Subject;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\UpdateUserRequest;
+use App\Http\Requests\MassDestroyUserRequest;
 use Symfony\Component\HttpFoundation\Response;
 
 class UsersController extends Controller
@@ -30,16 +31,22 @@ class UsersController extends Controller
         abort_if(Gate::denies('user_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $roles = Role::pluck('title', 'id');
+        $subject = Subject::pluck('name', 'id');
 
-        return view('admin.users.create', compact('roles'));
+        return view('admin.users.create', compact('roles','subject'));
     }
 
     public function store(StoreUserRequest $request)
     {
+        $request->validate([
+            'phone'=> 'required|unique:users',
+            'email'=> 'required|unique:users',
+        ]);
+        
         $user = User::create($request->all());
         $user->roles()->sync($request->input('roles', []));
 
-        return redirect()->route('admin.usersindex');
+        return redirect()->route('admin.users.index');
     }
 
     public function edit(User $user)
@@ -48,18 +55,20 @@ class UsersController extends Controller
         abort_if(Gate::denies('user_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $roles = Role::pluck('title', 'id');
+        $subject = Subject::pluck('name', 'id');
 
         $user->load('roles');
 
-        return view('admin.users.edit', compact('roles', 'user'));
+        return view('admin.users.edit', compact('roles', 'user','subject'));
     }
 
     public function update(UpdateUserRequest $request, User $user)
     {
+
         $user->update($request->all());
         $user->roles()->sync($request->input('roles', []));
 
-        return redirect()->route('admin.usersindex');
+        return redirect()->route('admin.users.index');
     }
 
     public function show(User $user)
