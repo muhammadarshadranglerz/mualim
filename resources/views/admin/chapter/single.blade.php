@@ -83,9 +83,11 @@
                 <div class="card" style="max-width: 540px;">
                     <div class="row">
                         <div class="col-md-4 d-flex justify-content-center flex-column">
+                            <a target="_blank" href="{{asset($content->file)}}">
                             <div class="align-self-center card-img mw-100 p-3" style="font-size:7rem;width: fit-content;">
                                 {!! isset($icon) ? $icon : '' !!}
                             </div>
+                        </a>
                             <div class="mw-100 p-1 align-self-center text-secondary">
                                 @php
                                     $attachmentName = basename($content->file);
