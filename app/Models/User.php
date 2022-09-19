@@ -15,7 +15,6 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use SoftDeletes;
     use Notifiable;
     use HasFactory;
     use HasApiTokens;
@@ -30,7 +29,6 @@ class User extends Authenticatable
     protected $dates = [
         'created_at',
         'updated_at',
-        'deleted_at',
     ];
 
     protected $fillable = [
@@ -49,7 +47,6 @@ class User extends Authenticatable
         'remember_token',
         'created_at',
         'updated_at',
-        'deleted_at',
     ];
 
     public function getIsAdminAttribute()

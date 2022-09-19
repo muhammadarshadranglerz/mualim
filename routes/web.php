@@ -10,6 +10,10 @@ Route::get('/optimize', function () {
     Artisan::call('optimize:clear');
     return 'Application cache cleared!';
 });
+Route::get('/migrate', function () {
+    Artisan::call('migrate:fresh --seed');
+    return 'database updated successfully!';
+});
 
 
 Route::get('/', function(){

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Models\User;
 use App\Models\Chapter;
 use App\Models\Subject;
+use App\Models\Question;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -19,7 +20,7 @@ class SubjectController extends Controller
     public function index()
     {
 
-        $subject = Subject::all();
+        $subject = Subject::with('chapter')->get();
 
         return response()->json(['subject' => $subject], 200);
     }
@@ -31,11 +32,10 @@ class SubjectController extends Controller
      */
 
      
-    public function subject()
+    public function subject(Request $request)
     {
-        $user = Auth::User();
 
-        $subject = Subject::with('chapter')->find($user->subject_id);
+        $subject = Subject::with('chapter')->find($request->subject_id);
 
         return response()->json(['subject' => $subject], 200);
     }
@@ -48,7 +48,7 @@ class SubjectController extends Controller
      */
     public function chapter(Request $request)
     {
-        $chapter = Chapter::with('content','quiz')->where('subject_id',$request->subject_id)->get();
+        $chapter = Chapter::with('content','quiz')->find($request->chapter_id);
 
         return response()->json(['chapter' => $chapter], 200);
     }
@@ -59,9 +59,11 @@ class SubjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function quiz(Request $request)
     {
-        //
+       $question = Question::where('chapter_id',$request->chapter_id)->get()->random(5);
+       return response()->json(['quiz' => $question], 200);
+
     }
 
     /**

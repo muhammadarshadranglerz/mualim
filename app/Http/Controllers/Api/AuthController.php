@@ -31,9 +31,7 @@ class AuthController extends Controller
             'qualification' => 'required',
             'experience' => 'required|integer',
             'cnic' => 'required',
-            'subject_id' => 'required',
             'phone' => 'required|unique:users',
-            'email' => 'required|email|unique:users',
             'password' => 'required|min:6',
             // 'confirm_password' => 'confirmed:password',
         ]);
@@ -117,6 +115,20 @@ class AuthController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+
+
+     public function email(Request $request){
+        $user = User::find(Auth::id());
+        $user->email = $request->email;
+        $user->save();
+        return response()->json([
+            'success' =>'successfully email updated',
+            'user' => $user,
+        ], 201);
+     }
+
+
+     
     public function logout()
     {
 
