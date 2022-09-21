@@ -20,7 +20,7 @@ class SubjectController extends Controller
     public function index()
     {
 
-        $subject = Subject::with('chapter')->get();
+        $subject = Subject::with('chapter.content')->get();
 
         return response()->json(['subject' => $subject], 200);
     }
@@ -35,7 +35,7 @@ class SubjectController extends Controller
     public function subject(Request $request)
     {
 
-        $subject = Subject::with('chapter')->find($request->subject_id);
+        $subject = Subject::with('chapter.content')->find($request->subject_id);
 
         return response()->json(['subject' => $subject], 200);
     }
