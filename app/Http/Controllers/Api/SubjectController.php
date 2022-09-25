@@ -31,7 +31,7 @@ class SubjectController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-     
+
     public function subject(Request $request)
     {
 
@@ -48,7 +48,38 @@ class SubjectController extends Controller
      */
     public function chapter(Request $request)
     {
-        $chapter = Chapter::with('content','quiz')->find($request->chapter_id);
+        $chapter = Chapter::with('content', 'quizzes')->find($request->chapter_id);
+        // by ali
+        $videoArray = [];
+        $fileArray = [];
+        if ($chapter->content) {
+            foreach ($chapter->content as $content) {
+                array_push($videoArray,$content['video']);
+                array_push($fileArray,$content['file']);
+            }
+        }
+        unset($chapter->content);
+        $chapter->videos=$videoArray;
+        $chapter->files=$fileArray;
+        // ==================================quizzes====================
+        if ($chapter->quizzes) {
+
+            foreach ($chapter->quizzes as $quiz) {
+                $quizOption=[];
+                array_push($quizOption,$quiz['first_option']);
+                array_push($quizOption,$quiz['second_option']);
+                array_push($quizOption,$quiz['third_option']);
+                array_push($quizOption,$quiz['fourth_option']);
+                unset($quiz['first_option']);
+                unset($quiz['second_option']);
+                unset($quiz['third_option']);
+                unset($quiz['fourth_option']);
+                $quiz->options=$quizOption;
+                $quiz->correctIndex=$quiz['correct']-1;
+                unset($quiz['correct']);
+            }
+        }
+        // by ali end
 
         return response()->json(['chapter' => $chapter], 200);
     }
@@ -61,9 +92,25 @@ class SubjectController extends Controller
      */
     public function quiz(Request $request)
     {
-       $question = Question::where('chapter_id',$request->chapter_id)->get()->random(5);
-       return response()->json(['quiz' => $question], 200);
-
+        $question = Question::where('chapter_id', $request->chapter_id)->get()->random(5);
+        
+        if ($question) {
+            foreach ($question as $quiz) {
+                $quizOption=[];
+                array_push($quizOption,$quiz['first_option']);
+                array_push($quizOption,$quiz['second_option']);
+                array_push($quizOption,$quiz['third_option']);
+                array_push($quizOption,$quiz['fourth_option']);
+                unset($quiz['first_option']);
+                unset($quiz['second_option']);
+                unset($quiz['third_option']);
+                unset($quiz['fourth_option']);
+                $quiz->options=$quizOption;
+                $quiz->correctIndex=$quiz['correct']-1;
+                unset($quiz['correct']);
+            }
+        }
+        return response()->json(['quiz' => $question], 200);
     }
 
     /**

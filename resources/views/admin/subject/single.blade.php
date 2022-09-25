@@ -106,7 +106,7 @@
                         <div class="form-group">
                             <label class="required" for="file">Lecture Attachments</label>
                             <input type="file"
-                                accept=".pdf,ppt,pptx,.doc,.docx,.png, .jpg, .jpeg,.doc,.docx,.xml,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                                accept=".pdf"
                                 class="form-control {{ $errors->has('file') ? 'is-invalid' : '' }}" type="text"
                                 name="file" id="file">
                             @if ($errors->has('file'))

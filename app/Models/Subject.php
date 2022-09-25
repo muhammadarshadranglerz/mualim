@@ -26,6 +26,6 @@ class Subject extends Model
 
     public function chapter()
     {
-        return $this->hasMany(Chapter::class, 'subject_id');
+        return $this->hasMany(Chapter::class, 'subject_id')->orderBy('chapter_no');
     }
 }

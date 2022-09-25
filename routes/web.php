@@ -54,7 +54,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     //question answer
     Route::resource('question-answer', 'QuestionAnswerController');
     // Route::get('users', 'UsersController@index')->name('usersindex');
-
+    //repott controller
+    Route::resource('report', 'ReportController');
 
     
 });

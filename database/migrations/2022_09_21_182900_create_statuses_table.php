@@ -21,7 +21,7 @@ class CreateStatusesTable extends Migration
             $table->foreign('subject_id')->references('id')->on('subjects')->onDelete('cascade');
             $table->unsignedBigInteger('chapter_id');
             $table->foreign('chapter_id')->references('id')->on('chapters')->onDelete('cascade');
-            $table->string('position')->default(0);
+            $table->string('chapter_no')->nullable();
             $table->timestamps();
         });
     }
@@ -36,3 +36,4 @@ class CreateStatusesTable extends Migration
         Schema::dropIfExists('statuses');
     }
 }
+

@@ -35,6 +35,16 @@
                         @endif
                     </div>
                     <div class="form-group">
+                        <label class="required" for="chapter-no">Chapter No.</label>
+                        <input type="number" class="form-control {{ $errors->has('chapter_no') ? 'is-invalid' : '' }}" type="text"
+                            name="chapter_no" id="chapter-no" value="{{ old('chapter_no', '') }}" required>
+                        @if ($errors->has('chapter_no'))
+                            <div class="txt-danger">
+                                {{ $errors->first('chapter_no') }}
+                            </div>
+                        @endif
+                    </div>
+                    <div class="form-group">
                         <label class="required" for="description">Description</label>
                         <input class="form-control {{ $errors->has('description') ? 'is-invalid' : '' }}" type="text"
                             name="description" id="description" value="{{ old('description', '') }}" required>
@@ -45,35 +55,10 @@
                         @endif
                     </div>
                     <div class="form-group">
-                        <label class="required" for="title">Lecture Title</label>
-                        <input class="form-control {{ $errors->has('title') ? 'is-invalid' : '' }}" type="text"
-                            name="title" id="title" value="{{ old('title', '') }}" required>
-                        @if ($errors->has('title'))
-                            <div class="txt-danger">
-                                {{ $errors->first('title') }}
-                            </div>
-                        @endif
-                    </div>
-                    <div class="form-group">
-                        <label class="required" for="note">Lecture Note</label>
-                        <input class="form-control {{ $errors->has('note') ? 'is-invalid' : '' }}" type="text"
-                            name="note" id="note" value="{{ old('note', '') }}" required>
-                        @if ($errors->has('note'))
-                            <div class="txt-danger">
-                                {{ $errors->first('note') }}
-                            </div>
-                        @endif
-                        @error('note')
-                            <div class="txt-danger">
-                                {{ $message }}
-                            </div>
-                        @enderror
-                    </div>
-                    <div class="form-group">
                         <label class="required" for="video">Lecture Video</label>
                         <input type="file" accept="video/*"
                             class="form-control {{ $errors->has('video') ? 'is-invalid' : '' }}" type="text"
-                            name="video" id="video">
+                            name="video[]" id="video" multiple>
                         @if ($errors->has('video'))
                             <div class="txt-danger">
                                 {{ $errors->first('video') }}
@@ -83,9 +68,9 @@
                     <div class="form-group">
                         <label class="required" for="file">Lecture Attachments</label>
                         <input type="file"
-                            accept=".pdf,ppt,pptx,.doc,.docx,.png, .jpg, .jpeg,.doc,.docx,.xml,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                            accept=".pdf"
                             class="form-control {{ $errors->has('file') ? 'is-invalid' : '' }}" type="text"
-                            name="file" id="file">
+                            name="file[]" id="file" multiple>
                         @if ($errors->has('file'))
                             <div class="txt-danger">
                                 {{ $errors->first('file') }}

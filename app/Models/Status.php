@@ -12,6 +12,6 @@ class Status extends Model
         'teacher_id',
         'subject_id',
         'chapter_id',
-        'position',
+        'chapter_no',
     ];
 }

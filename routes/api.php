@@ -8,13 +8,13 @@ Route::get('token_confirm/{token}', 'Api\AuthController@tokenConfirm')->name('to
 Route::get('password_change', 'Api\AuthController@submitResetPassword')->name('password_change');
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
-
+    
     Route::get('all/subjects', 'Api\SubjectController@index');
-    Route::post('subject', 'Api\SubjectController@subject');
+    Route::post('subjects', 'Api\SubjectController@subject');
     Route::post('chapter', 'Api\SubjectController@chapter');
     Route::post('quiz', 'Api\SubjectController@quiz');
     Route::post('email', 'Api\AuthController@email');
-    Route::get('status', 'Api\StatusController@status');
+    Route::post('status', 'Api\StatusController@status');
     Route::post('status/store', 'Api\StatusController@statusStore');
     Route::post('score', 'Api\StatusController@score');
     Route::post('score/store', 'Api\StatusController@scoreStore');

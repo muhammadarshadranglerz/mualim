@@ -315,6 +315,21 @@
                                     </li>
 
                                 @endcan
+                                @can('course_access')
+
+                                    <li class="dropdown"><a class="nav-link menu-title"><i
+                                                data-feather="airplay"></i><span>Report</span></a>
+
+                                        <ul class="nav-submenu menu-content">
+
+                                            @can('chapter_access')
+                                                <li><a href="{{ route('admin.report.index') }}">Report</a></li>
+                                            @endcan                                        
+                                        </ul>
+
+                                    </li>
+
+                                @endcan
 
 
 

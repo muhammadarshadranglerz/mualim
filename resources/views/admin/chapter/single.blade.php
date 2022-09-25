@@ -13,119 +13,130 @@
             <div>{{ $error }}</div>
         @endforeach
     @endif --}}
-    <div class="row">
-        <div class="col-lg-6">
-            <h3>Chapter Details</h3>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <h3>Chapter No : {{ $chapter->chapter_no }}</h3>
+            </div>
+            <div class="col-lg-6 row justify-content-end">
+                <form action="{{ route('admin.chapter.destroy', $chapter->id) }}" method="POST"
+                    onsubmit="return confirm('{{ trans('global.areYouSure') }}');" class="me-3" style="width:fit-content;">
+                    <a class="btn btn btn-info" href="{{ route('admin.chapter.edit', $chapter->id) }}">
+                        {{ trans('global.edit') }}
+                    </a>
+                    <input type="hidden" name="_method" value="DELETE">
+                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                    <input type="submit" class="btn btn btn-danger" value="{{ trans('global.delete') }}">
+                </form>
+            </div>
         </div>
-        <div class="col-lg-6 row justify-content-end">
-            <form action="{{ route('admin.chapter.destroy', $chapter->id) }}" method="POST"
-                onsubmit="return confirm('{{ trans('global.areYouSure') }}');" class="me-3" style="width:fit-content;">
-                <a class="btn btn btn-info" href="{{ route('admin.chapter.edit', $chapter->id) }}">
-                    {{ trans('global.edit') }}
-                </a>
-                <input type="hidden" name="_method" value="DELETE">
-                <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                <input type="submit" class="btn btn btn-danger" value="{{ trans('global.delete') }}">
-            </form>
-        </div>
-    </div>
-    <div class="row learning-block">
-        <div class="col-12 xl-50 box-col-12">
-            <div class="blog-single">
-                <div class="blog-box blog-details">
-                    @php
-                        $content = $chapter->content->first();
-                    @endphp
-                    <div class="card">
-                        <div class="card-body">
-                            @if ($content->video)
-                                <video class="img-fluid w-100" controls="controls" src="{{ asset($content->video) }}">
-                                    Your browser does not support the HTML5 Video element.
-                                </video>
-                            @endif
-                        </div>
-                        <h3 class=" ms-4">{{ $content->title }}</h3>
-                        <p class=" ms-4">{{ $content->note }}</p>
-                    </div>
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body bg-light txt-dark">
+                    <h1 class="card-title">{{ $chapter->name }}</h1>
+                    <p class="card-text">{{ $chapter->description }}</p>
+                    <p class="card-text"><small class="text-muted">{{ $chapter->created_at->diffForHumans() }}</small>
+                    </p>
                 </div>
             </div>
         </div>
-        @if ($content->file)
-            @php
-                $attachmentExtension = strtoupper(pathinfo($content->file, PATHINFO_EXTENSION));
-                $attachmentExtension = trim($attachmentExtension);
-                
-                if (in_array($attachmentExtension, ['JPEG', 'PNG', 'GIF', 'TIFF', 'AI'])) {
-                    $icon = '<i class="fa fa-file-image-o txt-success">
+        <div class="row">
+            <div class="col-12 d-flex">
+                <button type="button" class="btn btn-primary ms-auto" data-toggle="modal" data-target="#addChapterContent">
+                    Add Lecture
+                </button>
+            </div>
+        </div>
+        {{-- ------------------------------- --}}
+        @if ($chapter->content)
+            @foreach ($chapter->content as $content)
+                <div class="row learning-block rounded p-3 my-2 mx-1 bg-white">
+                    <div class="col-12 d-flex justify-content-end">
+                        <form action="{{ route('admin.chapter.content.distroy') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="id" value="{{ $content->id }}">
+                            <button type="submit" class="btn btn-danger">delete</button>
+                        </form>
+                    </div>
+                    <div class="col-12 xl-50 box-col-12">
+                        @if ($content->video)
+                            <div class="blog-single">
+                                <div class="blog-box blog-details">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <video class="img-fluid w-100" controls="controls"
+                                                src="{{ asset($content->video) }}">
+                                                Your browser does not support the HTML5 Video element.
+                                            </video>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+
+                    </div>
+                    @if ($content->file)
+                        @php
+                            $attachmentExtension = strtoupper(pathinfo($content->file, PATHINFO_EXTENSION));
+                            $attachmentExtension = trim($attachmentExtension);
+                            
+                            if (in_array($attachmentExtension, ['JPEG', 'PNG', 'GIF', 'TIFF', 'AI'])) {
+                                $icon = '<i class="fa fa-file-image-o txt-success">
                             <i class="fa fa-download" aria-hidden="true"></i>
                             </i>';
-                } elseif (in_array($attachmentExtension, ['MP4', 'MOV', 'WMV', 'AVI', 'AVCHD', 'FLV', 'F4V', 'SWF', 'MKV', 'WEBM'])) {
-                    $icon = '<i class="fa fas fa-video txt-primary"></i>';
-                } elseif (in_array($attachmentExtension, ['7Z', 'RAR', 'ZIP'])) {
-                    $icon = '<i class="fa fa-file-archive-o txt-secondary"></i>';
-                } elseif (in_array($attachmentExtension, ['TXT', 'DOC', 'DOCX', 'PPT', 'PPTX'])) {
-                    $icon = '<i class="fa fa-file-text-o txt-fb"></i>';
-                } elseif (in_array($attachmentExtension, ['PDF'])) {
-                    $icon = '<i class="fa fa-file-pdf-o txt-danger"></i>';
-                } elseif (in_array($attachmentExtension, ['HTML', 'HTM'])) {
-                    $icon = '<i class="fa-brands fa-chrome txt-google-plus"></i>';
-                } elseif (in_array($attachmentExtension, ['XLS', 'XLSX'])) {
-                    $icon = '<i class="fa fa-file-excel-o txt-primary"></i>';
-                } elseif (in_array($attachmentExtension, ['CSV'])) {
-                    $icon = '<i class="fa-solid fa-file-csv txt-success"></i>';
-                } elseif (in_array($attachmentExtension, ['TXT'])) {
-                    $icon = '<i class="fa-solid fa-file-csv txt-light"></i>';
-                } else {
-                    $icon = '<i class="fa-solid fa-solid fa-file txt-info"></i>';
-                }
-            @endphp
-            <div class="col-md-6 col-12">
-                <div class="card" style="max-width: 540px;">
-                    <div class="row">
-                        <div class="col-md-4 d-flex justify-content-center flex-column">
-                            <a target="_blank" href="{{asset($content->file)}}">
-                            <div class="align-self-center card-img mw-100 p-3" style="font-size:7rem;width: fit-content;">
-                                {!! isset($icon) ? $icon : '' !!}
-                            </div>
-                        </a>
-                            <div class="mw-100 p-1 align-self-center text-secondary">
-                                @php
-                                    $attachmentName = basename($content->file);
-                                    $attachmentName = ltrim(substr($attachmentName, strpos($attachmentName, '_') + 1));
-                                    $attachmentName = rtrim($attachmentName, '.' . pathinfo($content->file, PATHINFO_EXTENSION));
-                                @endphp
-                                {{ $attachmentName }}
+                            } elseif (in_array($attachmentExtension, ['MP4', 'MOV', 'WMV', 'AVI', 'AVCHD', 'FLV', 'F4V', 'SWF', 'MKV', 'WEBM'])) {
+                                $icon = '<i class="fa fas fa-video txt-primary"></i>';
+                            } elseif (in_array($attachmentExtension, ['7Z', 'RAR', 'ZIP'])) {
+                                $icon = '<i class="fa fa-file-archive-o txt-secondary"></i>';
+                            } elseif (in_array($attachmentExtension, ['TXT', 'DOC', 'DOCX', 'PPT', 'PPTX'])) {
+                                $icon = '<i class="fa fa-file-text-o txt-fb"></i>';
+                            } elseif (in_array($attachmentExtension, ['PDF'])) {
+                                $icon = '<i class="fa fa-file-pdf-o txt-danger"></i>';
+                            } elseif (in_array($attachmentExtension, ['HTML', 'HTM'])) {
+                                $icon = '<i class="fa-brands fa-chrome txt-google-plus"></i>';
+                            } elseif (in_array($attachmentExtension, ['XLS', 'XLSX'])) {
+                                $icon = '<i class="fa fa-file-excel-o txt-primary"></i>';
+                            } elseif (in_array($attachmentExtension, ['CSV'])) {
+                                $icon = '<i class="fa-solid fa-file-csv txt-success"></i>';
+                            } elseif (in_array($attachmentExtension, ['TXT'])) {
+                                $icon = '<i class="fa-solid fa-file-csv txt-light"></i>';
+                            } else {
+                                $icon = '<i class="fa-solid fa-solid fa-file txt-info"></i>';
+                            }
+                        @endphp
+                        <div class="col-md-6 col-12">
+                            <div class="card" style="max-width: 540px; min-height: 291px;">
+                                <div class="row justify-content-around">
+                                    <div class="col-md-12 d-flex justify-content-around ">
+                                        <a target="_blank" href="{{ asset($content->file) }}">
+                                            <div class="align-self-center card-img mw-100 p-3"
+                                                style="font-size:152px;width: fit-content;">
+                                                {!! isset($icon) ? $icon : '' !!}
+                                            </div>
+                                        </a>
+                                        <div class="mw-100 p-1 align-self-center text-secondary">
+                                            @php
+                                                $attachmentName = basename($content->file);
+                                                $attachmentName = ltrim(substr($attachmentName, strpos($attachmentName, '_') + 1));
+                                                $attachmentName = rtrim($attachmentName, '.' . pathinfo($content->file, PATHINFO_EXTENSION));
+                                            @endphp
+                                            <strong>{{ $attachmentName }}</strong>
+                                        </div>
+                                    </div>
+
+                                    {{-- <div class="col-md-8">
+                                    
+                                    </div> --}}
+                                </div>
                             </div>
                         </div>
-
-                        <div class="col-md-8">
-                            <div class="card-body">
-                                <h5 class="card-title">{{ $chapter->name }}</h5>
-                                <p class="card-text">{{ $chapter->description }}</p>
-                                <p class="card-text"><small
-                                        class="text-muted">{{ $chapter->created_at->diffForHumans() }}</small></p>
-                            </div>
-                        </div>
-                    </div>
+                    @endif
                 </div>
-            </div>
-        @else
-            <div class="col-md-6 col-12">
-                <div class="card">
-                    <div class="card-header bg-gray-300">
-                        Chapter:
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">{{ $chapter->name }}</h5>
-                        <p class="card-text">{{ $chapter->description }}</p>
-                        <p class="card-text"><small class="text-muted">{{ $chapter->created_at->diffForHumans() }}</small>
-                        </p>
-
-                    </div>
-                </div>
-
-            </div>
+            @endforeach
         @endif
+
+        {{-- ------------------------------- --}}
+
         <div class="card">
             <div class="card-header d-flex">
                 <div class="col-6">
@@ -160,6 +171,7 @@
             </div>
         </div>
     </div>
+
     </div>
     {{-- model --}}
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -268,6 +280,57 @@
             </div>
         </div>
     </div>
+    {{-- second model add chapter --}}
+    <div class="modal fade" id="addChapterContent" tabindex="-1" role="dialog" aria-labelledby="addChapterContent"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Lecture.</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" class="row" action="{{ route('admin.chapter.content.store') }}"
+                        enctype="multipart/form-data">
+                        @csrf
+                        <input type="hidden" name="chapter_id" value="{{ $chapter->id }}">
+                        <div class="border border-light rounded m-1 mb-2 p-3 row chapter-content" id="">
+                            <div class="form-group col-12">
+                                <label class="required">Lecture Video</label>
+                                <input type="file" accept="video/*" class="form-control " type="text"
+                                    name="video" multiple required>
+                                @if ($errors->has('video'))
+                                    <div class="txt-danger">
+                                        {{ $errors->first('video') }}
+                                    </div>
+                                @endif
+                            </div>
+                            <div class="form-group col-12">
+                                <label class="required">Lecture Attachments</label>
+                                <input type="file"
+                                    accept=".pdf"
+                                    class="form-control" type="text" name="file" multiple required>
+                                @if ($errors->has('file'))
+                                    <div class="txt-danger">
+                                        {{ $errors->first('file') }}
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Add</button>
+                </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+    {{-- end model --}}
 @endsection
 @section('footer.script')
     <script>
