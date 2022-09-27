@@ -5,9 +5,11 @@
             <h1>Chapters</h1>
         </div>
         <div style="width: fit-content;">
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+
+            <a href="{{ route('admin.chapter.create') }}" class="btn btn-primary">
                 Add Chapter
-            </button>
+            </a>
+
         </div>
     </div>
 
@@ -37,118 +39,16 @@
             </div>
         </div>
     </div>
-    {{-- model --}}
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add Chapter</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    {{-- ... --}}
-                    <form method="POST" action="{{ route('admin.chapter.store') }}" enctype="multipart/form-data">
-                        @csrf
-                        <div class="form-group">
-                            <label class="required" for="name">Name</label>
-                            <input class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" type="text"
-                                name="name" id="name" value="{{ old('name', '') }}" required>
-                            @if ($errors->has('name'))
-                                <div class="txt-danger">
-                                    {{ $errors->first('name') }}
-                                </div>
-                            @endif
-                        </div>
-                        <div class="form-group">
-                            <label class="required" for="name">Chapter No</label>
-                            <input class="form-control {{ $errors->has('chapter_no') ? 'is-invalid' : '' }}" type="text"
-                                name="chapter_no" id="chapter_no" value="{{ old('chapter_no', '') }}" required>
-                            @if ($errors->has('chapter_no'))
-                                <div class="txt-danger">
-                                    {{ $errors->first('chapter_no') }}
-                                </div>
-                            @endif
-                        </div>
-                        <div class="form-group">
-                            <label class="required" for="description">Description</label>
-                            <input class="form-control {{ $errors->has('description') ? 'is-invalid' : '' }}" type="text"
-                                name="description" id="description" value="{{ old('description', '') }}" required>
-                            @if ($errors->has('description'))
-                                <div class="txt-danger">
-                                    {{ $errors->first('description') }}
-                                </div>
-                            @endif
-                        </div>
-                        <div class="form-group">
-                            <label class="required" for="title">Lecture Title</label>
-                            <input class="form-control {{ $errors->has('title') ? 'is-invalid' : '' }}" type="text"
-                                name="title" id="title" value="{{ old('title', '') }}" required>
-                            @if ($errors->has('title'))
-                                <div class="txt-danger">
-                                    {{ $errors->first('title') }}
-                                </div>
-                            @endif
-                        </div>
-                        <div class="form-group">
-                            <label class="required" for="note">Lecture Note</label>
-                            <input class="form-control {{ $errors->has('note') ? 'is-invalid' : '' }}" type="text"
-                                name="note" id="note" value="{{ old('note', '') }}" required>
-                            @if ($errors->has('note'))
-                                <div class="txt-danger">
-                                    {{ $errors->first('note') }}
-                                </div>
-                            @endif
-                        </div>
-                        <div class="vid-main">
-                            <a id="1" class="increment float-right py-0 px-2"
-                            style="border: none;color:white;background:black; border-radius:5px;cursor:pointer">+</a>
-                            <div class="vid-child form-group py-3 px-2" style="background:rgb(248, 246, 246)">
-                                <label class="required" for="video">Lecture 1 URL</label>
-                                <input style="background: rgb(2248, 246, 246);border:1px solid" type="text"
-                                    class="form-control" type="text" name="video[]" id="video">
-                                @if ($errors->has('video'))
-                                    <div class="txt-danger">
-                                        {{ $errors->first('video') }}
-                                    </div>
-                                @endif
-                            </div>
-                           
-                        </div>
-                        <div class="form-group">
-                            <label class="required" for="file">Lecture Attachments</label>
-                            <input type="file" accept=".pdf"
-                                class="form-control {{ $errors->has('file') ? 'is-invalid' : '' }}" type="text"
-                                name="file" id="file">
-                            @if ($errors->has('file'))
-                                <div class="txt-danger">
-                                    {{ $errors->first('file') }}
-                                </div>
-                            @endif
-                        </div>
-                        <input type="hidden" name="subject_id" value="{{ $subjectId }}">
-                        <div class="form-group">
-                            <button class="btn btn-danger" type="submit">
-                                {{ trans('global.save') }}
-                            </button>
-                        </div>
-                    </form>
-
-                </div>
-            </div>
-        </div>
-    </div>
+    
 @endsection
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script>
     $(document).on('click', '.increment', function() {
         var id = $(this).attr('id');
-        var id = parseInt(id)+1;
+        var id = parseInt(id) + 1;
         $(this).addClass('d-none');
-    //    var val = $('#video_no').val();
-                    $('.vid-main').append(`
+        //    var val = $('#video_no').val();
+        $('.vid-main').append(`
                     <a class=" increment float-right py-0 px-2 newinc"
                             style="border: none;color:white;background:black; border-radius:5px;cursor:pointer">+</a>
                     <div class="vid-child form-group py-3 px-2" style="background:rgb(248, 246, 246)">
@@ -159,9 +59,9 @@
                             </div>
                         `);
 
-                        $('.newinc').attr('id', id);
-                        $('.newlable').html('Lecture Url');
-                        $('.newlable').removeClass('newlable');
-               
+        $('.newinc').attr('id', id);
+        $('.newlable').html('Lecture Url');
+        $('.newlable').removeClass('newlable');
+
     });
 </script>

@@ -18,7 +18,7 @@
                                 <option value="{{ $subject->id }}">{{ $subject->name }}</option>
                             @endforeach
                         </select>
-                        
+
                         @error('subject_id')
                             <div class="txt-danger">
                                 {{ $message }}
@@ -27,8 +27,8 @@
                     </div>
                     <div class="form-group">
                         <label class="required" for="name">Name</label>
-                        <input class="form-control" type="text"
-                            name="name" id="name" value="{{ old('name', '') }}" required>
+                        <input class="form-control" type="text" name="name" id="name"
+                            value="{{ old('name', '') }}" required>
                         @if ($errors->has('name'))
                             <div class="txt-danger">
                                 {{ $errors->first('name') }}
@@ -37,8 +37,8 @@
                     </div>
                     <div class="form-group">
                         <label class="required" for="chapter-no">Chapter No.</label>
-                        <input type="number" class="form-control {{ $errors->has('chapter_no') ? 'is-invalid' : '' }}" type="text"
-                            name="chapter_no" id="chapter-no" value="{{ old('chapter_no', '') }}" required>
+                        <input type="number" class="form-control {{ $errors->has('chapter_no') ? 'is-invalid' : '' }}"
+                            type="text" name="chapter_no" id="chapter-no" value="{{ old('chapter_no', '') }}" required>
                         @if ($errors->has('chapter_no'))
                             <div class="txt-danger">
                                 {{ $errors->first('chapter_no') }}
@@ -57,11 +57,11 @@
                     </div>
                     <div class="vid-main">
                         <a id="1" class="increment float-right py-0 px-2"
-                        style="border: none;color:white;background:black; border-radius:5px;cursor:pointer">+</a>
+                            style="border: none;color:white;background:black; border-radius:5px;cursor:pointer">+</a>
                         <div class="vid-child form-group py-3 px-2" style="background:rgb(248, 246, 246)">
                             <label class="required" for="video">Lecture 1 URL</label>
                             <input style="background: rgb(2248, 246, 246);border:1px solid" type="text"
-                                class="form-control" type="text" name="video[]" id="video">
+                                class="form-control" type="url" name="video[]" id="video">
                             @if ($errors->has('video'))
                                 <div class="txt-danger">
                                     {{ $errors->first('video') }}
@@ -71,8 +71,7 @@
                     </div>
                     <div class="form-group">
                         <label class="required" for="file">Lecture Attachments</label>
-                        <input type="file"
-                            accept=".pdf"
+                        <input type="file" accept="application/pdf"
                             class="form-control {{ $errors->has('file') ? 'is-invalid' : '' }}" type="text"
                             name="file[]" id="file" multiple>
                         @if ($errors->has('file'))
@@ -81,7 +80,15 @@
                             </div>
                         @endif
                     </div>
-
+                    @if (count($errors) > 0)
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
                     <div class="form-group">
                         <button class="btn btn-danger" type="submit">
                             {{ trans('global.save') }}
@@ -98,31 +105,24 @@
 <script>
     $(document).on('click', '.increment', function() {
         var id = $(this).attr('id');
-        var id = parseInt(id)+1;
+        var id = parseInt(id) + 1;
         $(this).addClass('d-none');
-    //    var val = $('#video_no').val();
-                    $('.vid-main').append(`
+        //    var val = $('#video_no').val();
+        $('.vid-main').append(`
                     <a class=" increment float-right py-0 px-2 newinc"
                             style="border: none;color:white;background:black; border-radius:5px;cursor:pointer">+</a>
                     <div class="vid-child form-group py-3 px-2" style="background:rgb(248, 246, 246)">
                                 <label class="required newlable" for="video"></label>
                                 <input style="background: rgb(2248, 246, 246);border:1px solid" type="text"
-                                    class="form-control" type="text" name="video[]" id="video">
+                                    class="form-control" type="url" name="video[]" id="video">
                                 
                             </div>
                         `);
 
-                        $('.newinc').attr('id', id);
-                        $('.newlable').html('Lecture Url');
-                        $('.newlable').removeClass('newlable');
-               @section("footer.script")
-<script>
-$(document).on('click',"#addMoreAttachment",function(){
-    var tempalate=$('.chapter-content:last').clone();
-    $('.chapter-content:last').after(tempalate);
-})
-</script>
-@endsection
+        $('.newinc').attr('id', id);
+        var titleText = 'Lecture ' + id + ' URL';
+        $('.newlable').html(titleText);
+        $('.newlable').removeClass('newlable');
 
     });
 </script>
