@@ -16,7 +16,7 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-6">
-                <h3>Chapter No : {{ $chapter->chapter_no }}</h3>
+                <h3>Chapter Details</h3>
             </div>
             <div class="col-lg-6 row justify-content-end">
                 <form action="{{ route('admin.chapter.destroy', $chapter->id) }}" method="POST"
@@ -51,29 +51,30 @@
         @if ($chapter->content)
             @foreach ($chapter->content as $content)
                 <div class="row learning-block rounded p-3 my-2 mx-1 bg-white">
-                    {{-- <div class="col-12 d-flex justify-content-end">
+                    <div class="col-12 d-flex justify-content-end">
                         <form action="{{ route('admin.chapter.content.distroy') }}" method="POST">
                             @csrf
                             <input type="hidden" name="id" value="{{ $content->id }}">
                             <button type="submit" class="btn btn-danger">delete</button>
                         </form>
-                    </div> --}}
+                    </div>
                     <div class="col-12 xl-50 box-col-12">
-                        @if ($content->video)
-                            <div class="blog-single">
-                                <div class="blog-box blog-details">
-                                    <div class="card">
-                                        <div class="card-body">
+                        <div class="blog-single">
+                            <div class="blog-box blog-details">
+                                <div class="card">
+                                    <div class="card-body">
+                                        @if ($content->video)
                                             <video class="img-fluid w-100" controls="controls"
                                                 src="{{ asset($content->video) }}">
                                                 Your browser does not support the HTML5 Video element.
                                             </video>
-                                        </div>
+                                        @endif
                                     </div>
+                                    <h3 class=" ms-4">{{ $content->title }}</h3>
+                                    <p class=" ms-4">{{ $content->note }}</p>
                                 </div>
                             </div>
-                        @endif
-
+                        </div>
                     </div>
                     @if ($content->file)
                         @php
@@ -105,12 +106,12 @@
                             }
                         @endphp
                         <div class="col-md-6 col-12">
-                            <div class="card" style="max-width: 540px; min-height: 291px;">
-                                <div class="row justify-content-around">
-                                    <div class="col-md-12 d-flex justify-content-around ">
+                            <div class="card" style="max-width: 540px;">
+                                <div class="row">
+                                    <div class="col-md-4 d-flex justify-content-center flex-column">
                                         <a target="_blank" href="{{ asset($content->file) }}">
                                             <div class="align-self-center card-img mw-100 p-3"
-                                                style="font-size:152px;width: fit-content;">
+                                                style="font-size:7rem;width: fit-content;">
                                                 {!! isset($icon) ? $icon : '' !!}
                                             </div>
                                         </a>
@@ -120,13 +121,19 @@
                                                 $attachmentName = ltrim(substr($attachmentName, strpos($attachmentName, '_') + 1));
                                                 $attachmentName = rtrim($attachmentName, '.' . pathinfo($content->file, PATHINFO_EXTENSION));
                                             @endphp
-                                            <strong>{{ $attachmentName }}</strong>
+                                            {{ $attachmentName }}
                                         </div>
                                     </div>
 
-                                    {{-- <div class="col-md-8">
-                                    
-                                    </div> --}}
+                                    <div class="col-md-8">
+                                        <div class="card-body">
+                                            <h5 class="card-title">{{ $chapter->name }}</h5>
+                                            <p class="card-text">{{ $chapter->description }}</p>
+                                            <p class="card-text"><small
+                                                    class="text-muted">{{ $chapter->created_at->diffForHumans() }}</small>
+                                            </p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -292,12 +299,36 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    {{-- <form method="POST" class="row" action="{{ route('admin.chapter.content.store') }}"
+                    <form method="POST" class="row" action="{{ route('admin.chapter.content.store') }}"
                         enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" name="chapter_id" value="{{ $chapter->id }}">
                         <div class="border border-light rounded m-1 mb-2 p-3 row chapter-content" id="">
-                            <div class="form-group col-12">
+                            <div class="form-group col-6">
+                                <label class="required">Lecture Title</label>
+                                <input class="form-control" type="text" name="title" value="" required
+                                    multiple>
+                                @if ($errors->has('title'))
+                                    <div class="txt-danger">
+                                        {{ $errors->first('title') }}
+                                    </div>
+                                @endif
+                            </div>
+                            <div class="form-group col-6">
+                                <label class="required">Lecture Note</label>
+                                <input class="form-control" type="text" name="note" required multiple>
+                                @if ($errors->has('note'))
+                                    <div class="txt-danger">
+                                        {{ $errors->first('note') }}
+                                    </div>
+                                @endif
+                                @error('note')
+                                    <div class="txt-danger">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                            <div class="form-group col-6">
                                 <label class="required">Lecture Video</label>
                                 <input type="file" accept="video/*" class="form-control " type="text"
                                     name="video" multiple required>
@@ -307,10 +338,10 @@
                                     </div>
                                 @endif
                             </div>
-                            <div class="form-group col-12">
+                            <div class="form-group col-6">
                                 <label class="required">Lecture Attachments</label>
                                 <input type="file"
-                                    accept=".pdf"
+                                    accept=".pdf,ppt,pptx,.doc,.docx,.png, .jpg, .jpeg,.doc,.docx,.xml,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                                     class="form-control" type="text" name="file" multiple required>
                                 @if ($errors->has('file'))
                                     <div class="txt-danger">
@@ -325,7 +356,7 @@
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary">Add</button>
                 </div>
-                </form> --}}
+                </form>
 
             </div>
         </div>
