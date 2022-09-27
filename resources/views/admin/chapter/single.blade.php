@@ -51,13 +51,13 @@
         @if ($chapter->content)
             @foreach ($chapter->content as $content)
                 <div class="row learning-block rounded p-3 my-2 mx-1 bg-white">
-                    <div class="col-12 d-flex justify-content-end">
+                    {{-- <div class="col-12 d-flex justify-content-end">
                         <form action="{{ route('admin.chapter.content.distroy') }}" method="POST">
                             @csrf
                             <input type="hidden" name="id" value="{{ $content->id }}">
                             <button type="submit" class="btn btn-danger">delete</button>
                         </form>
-                    </div>
+                    </div> --}}
                     <div class="col-12 xl-50 box-col-12">
                         @if ($content->video)
                             <div class="blog-single">
@@ -292,7 +292,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form method="POST" class="row" action="{{ route('admin.chapter.content.store') }}"
+                    {{-- <form method="POST" class="row" action="{{ route('admin.chapter.content.store') }}"
                         enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" name="chapter_id" value="{{ $chapter->id }}">
@@ -325,7 +325,7 @@
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary">Add</button>
                 </div>
-                </form>
+                </form> --}}
 
             </div>
         </div>

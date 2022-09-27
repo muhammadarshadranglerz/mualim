@@ -63,6 +63,16 @@
                             @endif
                         </div>
                         <div class="form-group">
+                            <label class="required" for="name">Chapter No</label>
+                            <input class="form-control {{ $errors->has('chapter_no') ? 'is-invalid' : '' }}" type="text"
+                                name="chapter_no" id="chapter_no" value="{{ old('chapter_no', '') }}" required>
+                            @if ($errors->has('chapter_no'))
+                                <div class="txt-danger">
+                                    {{ $errors->first('chapter_no') }}
+                                </div>
+                            @endif
+                        </div>
+                        <div class="form-group">
                             <label class="required" for="description">Description</label>
                             <input class="form-control {{ $errors->has('description') ? 'is-invalid' : '' }}" type="text"
                                 name="description" id="description" value="{{ old('description', '') }}" required>
@@ -92,21 +102,24 @@
                                 </div>
                             @endif
                         </div>
-                        <div class="form-group">
-                            <label class="required" for="video">Lecture Video</label>
-                            <input type="file" accept="video/*"
-                                class="form-control {{ $errors->has('video') ? 'is-invalid' : '' }}" type="text"
-                                name="video" id="video">
-                            @if ($errors->has('video'))
-                                <div class="txt-danger">
-                                    {{ $errors->first('video') }}
-                                </div>
-                            @endif
+                        <div class="vid-main">
+                            <a id="1" class="increment float-right py-0 px-2"
+                            style="border: none;color:white;background:black; border-radius:5px;cursor:pointer">+</a>
+                            <div class="vid-child form-group py-3 px-2" style="background:rgb(248, 246, 246)">
+                                <label class="required" for="video">Lecture 1 URL</label>
+                                <input style="background: rgb(2248, 246, 246);border:1px solid" type="text"
+                                    class="form-control" type="text" name="video[]" id="video">
+                                @if ($errors->has('video'))
+                                    <div class="txt-danger">
+                                        {{ $errors->first('video') }}
+                                    </div>
+                                @endif
+                            </div>
+                           
                         </div>
                         <div class="form-group">
                             <label class="required" for="file">Lecture Attachments</label>
-                            <input type="file"
-                                accept=".pdf"
+                            <input type="file" accept=".pdf"
                                 class="form-control {{ $errors->has('file') ? 'is-invalid' : '' }}" type="text"
                                 name="file" id="file">
                             @if ($errors->has('file'))
@@ -128,3 +141,27 @@
         </div>
     </div>
 @endsection
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    $(document).on('click', '.increment', function() {
+        var id = $(this).attr('id');
+        var id = parseInt(id)+1;
+        $(this).addClass('d-none');
+    //    var val = $('#video_no').val();
+                    $('.vid-main').append(`
+                    <a class=" increment float-right py-0 px-2 newinc"
+                            style="border: none;color:white;background:black; border-radius:5px;cursor:pointer">+</a>
+                    <div class="vid-child form-group py-3 px-2" style="background:rgb(248, 246, 246)">
+                                <label class="required newlable" for="video"></label>
+                                <input style="background: rgb(2248, 246, 246);border:1px solid" type="text"
+                                    class="form-control" type="text" name="video[]" id="video">
+                                
+                            </div>
+                        `);
+
+                        $('.newinc').attr('id', id);
+                        $('.newlable').html('Lecture Url');
+                        $('.newlable').removeClass('newlable');
+               
+    });
+</script>

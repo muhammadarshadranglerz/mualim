@@ -53,7 +53,7 @@ class StatusController extends Controller
             $status = Status::where([['teacher_id', Auth::id()],['subject_id',$request->subject_id]])->first();
             $status->update([
                 'subject_id' => $request->subject_id,
-                'chapter_id' => $chapter->chapter_id,
+                'chapter_id' => $chapter->id,
                 'chapter_no' => $chapter->chapter_no,
             ]);
         }

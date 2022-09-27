@@ -41,6 +41,8 @@ class ChapterController extends Controller
      */
     public function store(Request $request)
     {
+        
+        // return $request;
         $request->validate(
             [
                 "name" => "required|string|max:100",
@@ -48,7 +50,7 @@ class ChapterController extends Controller
                 "subject_id" => "required|integer",
                 "title" => "required|string|max:100",
                 "note" => "required|string|max:255",
-                "video" => "nullable|mimetypes:video/x-flv,video/mp4,application/x-mpegURL,video/MP2T,video/3gpp,video/quicktime,video/x-msvideo,video/x-ms-wmv",
+                "video" => "required",
                 "file" => "nullable|file|max:10240",
             ],
             [
@@ -59,12 +61,6 @@ class ChapterController extends Controller
         
         $inputs = $request->only('title', 'note');
         $destinationPath = public_path('uploads');
-        if ($request->file('video')) {
-            $video = $request->file('video');
-            $videoName = time() . '_' . $video->getClientOriginalName();
-            $video->move($destinationPath, $videoName);
-            $inputs += ['video' => 'uploads/' . $videoName];
-        }
         if ($request->file('file')) {
             $file = $request->file('file');
             $fileName = time() . '_' . $file->getClientOriginalName();
@@ -73,9 +69,17 @@ class ChapterController extends Controller
         }
         // dd($request->only('name', 'description', 'subject_id'));
         // dd($inputs);
-        $chapter = Chapter::create($request->only('name', 'description', 'subject_id'));
+        $chapter = Chapter::create($request->only('name', 'description', 'subject_id','chapter_no'));
         $inputs += ['chapter_id' => $chapter->id];
         ChapterContent::create($inputs);
+        foreach($request->video as $data){
+            $content = new ChapterContent();
+            $content->title =$request->title;
+            $content->note =$request->note;
+            $content->video =$data;
+            $content->chapter_id =$chapter->id;
+            $content->save();
+        }
         if($request->only("submittedFromEdit")){
             return redirect()->route('admin.chapter.index');
         }
