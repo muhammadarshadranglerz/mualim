@@ -1,22 +1,27 @@
 <?php
 
-use App\Http\Controllers\Admin\SubjectController;
 use Doctrine\DBAL\Schema\Index;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\SubjectController;
+use App\Http\Controllers\Admin\ChapterContentController;
 
 
-Route::get('/optimize', function () {
-    Artisan::call('optimize:clear');
-    return 'Application cache cleared!';
-});
+// Route::get('/optimize', function () {
+//     Artisan::call('optimize:clear');
+//     return 'Application cache cleared!';
+// });
+// Route::get('/migrate', function () {
+//     Artisan::call('migrate:fresh --seed');
+//     return 'database updated successfully!';
+// });
 Route::get('/migrate', function () {
-    Artisan::call('migrate:fresh --seed');
+    Artisan::call('migrate');
     return 'database updated successfully!';
 });
 
 
-Route::get('/', function(){
+Route::get('/', function () {
     return redirect()->route('admin.home');
 });
 
@@ -34,7 +39,7 @@ Auth::routes(['register' => false]);
 
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'middleware' => ['auth']], function () {
     Route::get('/', 'HomeController@index')->name('home');
-   
+
     // Permissions
     Route::delete('permissions/destroy', 'PermissionsController@massDestroy')->name('permissions.massDestroy');
     Route::resource('permissions', 'PermissionsController');
@@ -56,8 +61,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     // Route::get('users', 'UsersController@index')->name('usersindex');
     //repott controller
     Route::resource('report', 'ReportController');
-
-    
+    // Chapter Content.
+    Route::post('chapter/content/destroy', [ChapterContentController::class, 'destroy'])->name('chapter.content.distroy');
+    Route::post('chapter/content/store', [ChapterContentController::class, 'store'])->name('chapter.content.store');
 });
 Route::group(['prefix' => 'profile', 'as' => 'profile.', 'namespace' => 'Auth', 'middleware' => ['auth']], function () {
     // Change password

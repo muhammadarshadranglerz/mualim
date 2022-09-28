@@ -18,6 +18,7 @@
                                 <option value="{{ $subject->id }}">{{ $subject->name }}</option>
                             @endforeach
                         </select>
+                        
                         @error('subject_id')
                             <div class="txt-danger">
                                 {{ $message }}
@@ -26,7 +27,7 @@
                     </div>
                     <div class="form-group">
                         <label class="required" for="name">Name</label>
-                        <input class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" type="text"
+                        <input class="form-control" type="text"
                             name="name" id="name" value="{{ old('name', '') }}" required>
                         @if ($errors->has('name'))
                             <div class="txt-danger">
@@ -110,9 +111,17 @@
                             </div>
                         `);
 
-        $('.newinc').attr('id', id);
-        $('.newlable').html('Lecture Url');
-        $('.newlable').removeClass('newlable');
+                        $('.newinc').attr('id', id);
+                        $('.newlable').html('Lecture Url');
+                        $('.newlable').removeClass('newlable');
+               @section("footer.script")
+<script>
+$(document).on('click',"#addMoreAttachment",function(){
+    var tempalate=$('.chapter-content:last').clone();
+    $('.chapter-content:last').after(tempalate);
+})
+</script>
+@endsection
 
     });
 </script>

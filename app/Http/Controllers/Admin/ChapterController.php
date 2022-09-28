@@ -48,19 +48,29 @@ class ChapterController extends Controller
                 "name" => "required|string|max:100",
                 "description" => "required|string|max:255",
                 "subject_id" => "required|integer",
-                "title" => "required|string|max:100",
-                "note" => "required|string|max:255",
-                "video" => "required",
-                "file" => "nullable|file|max:10240",
+                // "title" => "required|string|max:100",
+                // "note" => "required|string|max:255",
+                // "video" => "required|mimetypes:video/x-flv,video/mp4,application/x-mpegURL,video/MP2T,video/3gpp,video/quicktime,video/x-msvideo,video/x-ms-wmv",
+                // "file" => "required|file|max:10240",
             ],
             [
-                "subject_id.required" => "Select a Subject",
-                "video.mimetypes" => "Video formate is not supported",
+                "subject_id|integer" => "Invalid data",
+
             ]
         );
-        
+
+
         $inputs = $request->only('title', 'note');
         $destinationPath = public_path('uploads');
+        $videoArray = [];
+        $fileArray = [];
+        if ($request->file('video')) {
+            foreach ($request->file('video') as $video) {
+                $videoName = time() . '_' . $video->getClientOriginalName();
+                $video->move($destinationPath, $videoName);
+                $videoArray += ['video' => 'uploads/' . $videoName];
+            }
+        }
         if ($request->file('file')) {
             $file = $request->file('file');
             $fileName = time() . '_' . $file->getClientOriginalName();

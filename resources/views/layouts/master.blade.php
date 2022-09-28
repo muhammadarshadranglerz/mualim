@@ -308,7 +308,7 @@
                                                 <li><a href="{{ route('admin.chapter.index') }}">Chapter</a></li>
                                             @endcan
 
-                                            <li><a href="{{ route('admin.question-answer.index') }}">Quizzes</a></li>
+                                            {{-- <li><a href="{{ route('admin.question-answer.index') }}">Quizzes</a></li> --}}
 
                                         </ul>
 
