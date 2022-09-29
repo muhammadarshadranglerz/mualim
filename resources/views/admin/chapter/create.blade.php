@@ -56,11 +56,11 @@
                         @endif
                     </div>
                     <div class="vid-main">
-                        <a id="1" class="increment float-right py-0 px-2"
-                            style="border: none;color:white;background:black; border-radius:5px;cursor:pointer">+</a>
-                        <div class="vid-child form-group py-3 px-2" style="background:rgb(248, 246, 246)">
+                        <a id="1" class="mb-2 py-1 increment float-right px-2 bg-success text-white border-none text-sm-center b-r-3"
+                            style="cursor:pointer;">Add more</a>
+                        <div class="vid-child form-group" >
                             <label class="required" for="video">Lecture 1 URL</label>
-                            <input style="background: rgb(2248, 246, 246);border:1px solid" type="text"
+                            <input type="text"
                                 class="form-control" type="url" name="video[]" id="video">
                             @if ($errors->has('video'))
                                 <div class="txt-danger">
@@ -81,7 +81,7 @@
                         @endif
                     </div>
                     @if (count($errors) > 0)
-                        <div class="alert alert-danger">
+                        <div class="text-danger">
                             <ul>
                                 @foreach ($errors->all() as $error)
                                     <li>{{ $error }}</li>
@@ -109,11 +109,11 @@
         $(this).addClass('d-none');
         //    var val = $('#video_no').val();
         $('.vid-main').append(`
-                    <a class=" increment float-right py-0 px-2 newinc"
-                            style="border: none;color:white;background:black; border-radius:5px;cursor:pointer">+</a>
-                    <div class="vid-child form-group py-3 px-2" style="background:rgb(248, 246, 246)">
+                    <a class="mb-2 py-1 increment float-right py-0 px-2 newinc bg-success text-white border-none  text-sm-center b-r-3"
+                            style="cursor:pointer;">Add more</a>
+                    <div class="vid-child form-group">
                                 <label class="required newlable" for="video"></label>
-                                <input style="background: rgb(2248, 246, 246);border:1px solid" type="text"
+                                <input type="text"
                                     class="form-control" type="url" name="video[]" id="video">
                                 
                             </div>
