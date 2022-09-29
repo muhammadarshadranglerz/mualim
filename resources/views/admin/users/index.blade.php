@@ -29,7 +29,6 @@
                             <th> Qualification</th>
                             <th> Experience</th>
                             <th> CNIC</th>
-                            <th> Subject</th>
                             <th> Status</th>
                             <th> Action</th>
                         </tr>
@@ -47,7 +46,6 @@
                                 <td>{{ $user->qualification ?? '' }}</td>
                                 <td>{{ $user->experience ?? '' }}</td>
                                 <td>{{ $user->cnic ?? '' }}</td>
-                                <td>{{ $user->subject->name ?? '' }}</td>
                                 <td id="approval{{$user->id}}">
                                     @if ($user->action == 1)
                                         <a href="#" class="btn btn-xs btn-success">Active</a>

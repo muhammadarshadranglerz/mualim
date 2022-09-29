@@ -31,9 +31,8 @@ class UsersController extends Controller
         abort_if(Gate::denies('user_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $roles = Role::pluck('title', 'id');
-        $subject = Subject::pluck('name', 'id');
 
-        return view('admin.users.create', compact('roles','subject'));
+        return view('admin.users.create', compact('roles'));
     }
 
     public function store(StoreUserRequest $request)
@@ -55,11 +54,10 @@ class UsersController extends Controller
         abort_if(Gate::denies('user_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $roles = Role::pluck('title', 'id');
-        $subject = Subject::pluck('name', 'id');
 
         $user->load('roles');
 
-        return view('admin.users.edit', compact('roles', 'user','subject'));
+        return view('admin.users.edit', compact('roles', 'user'));
     }
 
     public function update(UpdateUserRequest $request, User $user)

@@ -1,14 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Api;
 
-use App\Models\User;
-use App\Models\Score;
-use App\Models\Status;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-class ReportController extends Controller
+class ProfileController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,11 +16,10 @@ class ReportController extends Controller
      */
     public function index()
     {
-        // $users = User::all();
-        $users = User::whereHas('roles', function ($q) {
-            $q->where('title', 'User');
-        })->get();
-        return view('admin.report.index',compact('users'));
+        $user = User::find(Auth::id());
+        return response([
+            'data' => $user,
+        ], 201);
     }
 
     /**
@@ -64,11 +62,7 @@ class ReportController extends Controller
      */
     public function edit($id)
     {
-        $certificate = Score::with('subject','chapter')->where('teacher_id',$id)->get();
-        $count = Score::with('subject','chapter')->where('teacher_id',$id)->count();
-        $obtain = Score::with('subject','chapter')->where('teacher_id',$id)->sum('score');
-        return view('admin.report.certificate',compact('certificate','count','obtain'));
-        
+        //
     }
 
     /**
@@ -78,9 +72,28 @@ class ReportController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $user = User::find(Auth::id());
+        if (isset($request->name)) {
+            $user->name = $request->name;
+        }
+        if (isset($request->email)) {
+            $user->email = $request->email;
+        }
+        if ($request->file('image')) {
+            $file = $request->file('image');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $destinationPath = public_path('uploads');
+            $file->move($destinationPath, $fileName);
+            $user->image = 'uploads/' . $fileName;
+        }
+        $user->save();
+
+        return response([
+            'success' => 'Updated Successfully',
+            'data' => $user,
+        ], 201);
     }
 
     /**
@@ -91,6 +104,6 @@ class ReportController extends Controller
      */
     public function destroy($id)
     {
-        return 'destroy';
+        //
     }
 }
