@@ -30,19 +30,7 @@
                     </div>
                 @endif
             </div>
-            <div class="form-group">
-                <label class="required" for="subject">Subject</label>
-                <select class="form-control select2 {{ $errors->has('subject_id') ? 'is-invalid' : '' }}" name="subject_id" id="subject"  required>
-                    @foreach($subject as $id => $subject)
-                    <option value="{{ $id }}" {{  old('subject_id')==$id ? 'selected' : '' }}>{{ $subject }}</option>
-                @endforeach
-                </select>
-                @if($errors->has('subject_id'))
-                    <div class="txt-danger">
-                        {{ $errors->first('subject_id') }}
-                    </div>
-                @endif
-            </div>
+           
             <div class="form-group">
                 <label class="required" for="organization">Organization</label>
                 <input class="form-control {{ $errors->has('organization') ? 'is-invalid' : '' }}" type="text" name="organization" id="organization" value="{{ old('organization', '') }}" required>

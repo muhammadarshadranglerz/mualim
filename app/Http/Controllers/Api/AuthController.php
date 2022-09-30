@@ -55,7 +55,15 @@ class AuthController extends Controller
             'password' => bcrypt($request->password),
             'subject_id' => $request->subject_id,
         ]);
-
+        if ($request->file('image')) {
+            $file = $request->file('image');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $destinationPath = public_path('uploads');
+            $file->move($destinationPath, $fileName);
+            $user->image = 'uploads/' . $fileName;
+            $user->save();
+        }
+        
         $token = $user->createToken('Arshad')->plainTextToken;
         $user->roles()->attach(2); // Simple user role
 
@@ -67,9 +75,6 @@ class AuthController extends Controller
         ], 201);
     }
 
-
-
-    
     /**
      * Show the form for creating a new resource.
      *
@@ -102,7 +107,7 @@ class AuthController extends Controller
 
         $token = $user->createToken('my-app-token')->plainTextToken;
         return response()->json([
-            'success' =>'successfully login',
+            'success' => 'successfully login',
             'token' => $token,
             'user' => $user,
         ], 201);
@@ -116,19 +121,17 @@ class AuthController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-
-     public function email(Request $request){
+    public function email(Request $request)
+    {
         $user = User::find(Auth::id());
         $user->email = $request->email;
         $user->save();
         return response()->json([
-            'success' =>'successfully email updated',
+            'success' => 'successfully email updated',
             'user' => $user,
         ], 201);
-     }
+    }
 
-
-     
     public function logout()
     {
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Models\ChapterContent;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Log;
 
 class ChapterContentController extends Controller
 {
@@ -13,40 +14,56 @@ class ChapterContentController extends Controller
         $request->validate(
             [
                 "chapter_id" => "required|integer",
-                "title" => "required|string|max:100",
-                "note" => "required|string|max:255",
-                "video" => "required|mimetypes:video/x-flv,video/mp4,application/x-mpegURL,video/MP2T,video/3gpp,video/quicktime,video/x-msvideo,video/x-ms-wmv",
-                "file" => "required|file|max:10240",
+                "video.*" => "nullable|url",
+                "file.*" => "nullable|mimes:pdf|max:10000",
             ],
             [
-                "video.mimetypes" => "Video formate is not supported",
+                "video.mimes" => "Video formate is not supported",
             ]
         );
-        $inputs = $request->only('title', 'note', 'chapter_id');
+        $inputs = $request->only('chapter_id', 'video');
         $destinationPath = public_path('uploads');
         $videoPath = '';
         $filePath = '';
-        if ($request->file('video')) {
-            $video = $request->file('video');
-            $videoName = time() . '_' . $video->getClientOriginalName();
-            $video->move($destinationPath, $videoName);
-            $videoPath = ['video' => 'uploads/' . $videoName];
-            $inputs += $videoPath;
-        }
         if ($request->file('file')) {
-            $file = $request->file('file');
-            $fileName = time() . '_' . $file->getClientOriginalName();
-            $file->move($destinationPath, $fileName);
-            $filePath = ['file' => 'uploads/' . $fileName];
-            $inputs += $filePath;
+            $filesArray = [];
+            foreach ($request->file('file') as $file) {
+                $fileName = time() . '_' . $file->getClientOriginalName();
+                $file->move($destinationPath, $fileName);
+                $filesArray[] = 'uploads/' . $fileName;
+            }
+            $inputs += ['files' =>  $filesArray];
         }
-        ChapterContent::create($inputs);
+        if (isset($inputs['video'])) {
+            foreach ($inputs['video'] as $vid) {
+                ChapterContent::create([
+                    'chapter_id' => $inputs['chapter_id'],
+                    'video' => $vid,
+                ]);
+            }
+        }
+        if (isset($inputs['files'])) {
+            foreach ($inputs['files'] as $fil) {
+                ChapterContent::create([
+                    'chapter_id' => $inputs['chapter_id'],
+                    'file' => $fil,
+                ]);
+            }
+        }
         return redirect()->back();
     }
     public function destroy(Request $request)
     {
         $id = $request->id;
-        ChapterContent::destroy($id);
+        $content = ChapterContent::find($id);
+        if ($content) {
+            if ($content->file) {
+                if (file_exists(asset($content->file))) {
+                    unlink(asset($content->file));
+                }
+            }
+            $content->delete();
+        }
         return redirect()->back();
     }
 }

@@ -11,6 +11,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     
     Route::get('all/subjects', 'Api\SubjectController@index');
     Route::post('subjects', 'Api\SubjectController@subject');
+    Route::post('search', 'Api\SubjectController@search');
     Route::post('chapter', 'Api\SubjectController@chapter');
     Route::post('quiz', 'Api\SubjectController@quiz');
     Route::post('email', 'Api\AuthController@email');

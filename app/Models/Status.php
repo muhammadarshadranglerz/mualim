@@ -14,4 +14,14 @@ class Status extends Model
         'chapter_id',
         'chapter_no',
     ];
+
+
+    public function subject()
+    {
+        return $this->belongsTo(Subject::class, 'subject_id');
+    }
+    public function chapter()
+    {
+        return $this->belongsTo(Chapter::class, 'chapter_id');
+    }
 }

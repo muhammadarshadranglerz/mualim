@@ -40,6 +40,49 @@ class SubjectController extends Controller
         return response()->json(['subject' => $subject], 200);
     }
 
+
+    public function search(Request $request)
+    {
+        $search = $request->name;
+
+        $chapter = Chapter::with('content')->where('name', 'Like', '%' . $search . '%')->get();
+        // $videoArray = [];
+        // $fileArray = [];
+        // if ($chapter->content) {
+        //     foreach ($chapter->content as $content) {
+        //         if(isset($content['video'])){
+        //             array_push($videoArray,$content['video']);
+        //         }
+        //         if(isset($content['file'])){
+        //             array_push($fileArray,$content['file']);
+        //         }
+        //     }
+        // }
+        // unset($chapter->content);
+        // $chapter->videos=$videoArray;
+        // $chapter->files=$fileArray;
+        // // ==================================quizzes====================
+        // if ($chapter->quizzes) {
+
+        //     foreach ($chapter->quizzes as $quiz) {
+        //         $quizOption=[];
+        //         array_push($quizOption,$quiz['first_option']);
+        //         array_push($quizOption,$quiz['second_option']);
+        //         array_push($quizOption,$quiz['third_option']);
+        //         array_push($quizOption,$quiz['fourth_option']);
+        //         unset($quiz['first_option']);
+        //         unset($quiz['second_option']);
+        //         unset($quiz['third_option']);
+        //         unset($quiz['fourth_option']);
+        //         $quiz->options=$quizOption;
+        //         $quiz->correctIndex=$quiz['correct']-1;
+        //         unset($quiz['correct']);
+        //     }
+        // }
+
+        return response()->json(['chapter' => $chapter], 200);
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -54,8 +97,12 @@ class SubjectController extends Controller
         $fileArray = [];
         if ($chapter->content) {
             foreach ($chapter->content as $content) {
-                array_push($videoArray,$content['video']);
-                array_push($fileArray,$content['file']);
+                if(isset($content['video'])){
+                    array_push($videoArray,$content['video']);
+                }
+                if(isset($content['file'])){
+                    array_push($fileArray,$content['file']);
+                }
             }
         }
         unset($chapter->content);

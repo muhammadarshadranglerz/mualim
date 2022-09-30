@@ -4,10 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Chapter;
 use App\Models\Subject;
+use App\Models\Question;
 use Illuminate\Http\Request;
 use App\Models\ChapterContent;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
-use App\Models\Question;
 
 class ChapterController extends Controller
 {
@@ -41,60 +42,50 @@ class ChapterController extends Controller
      */
     public function store(Request $request)
     {
-        
-        // return $request;
         $request->validate(
             [
                 "name" => "required|string|max:100",
                 "description" => "required|string|max:255",
+                "chapter_no" => "required|integer",
                 "subject_id" => "required|integer",
-                // "title" => "required|string|max:100",
-                // "note" => "required|string|max:255",
-                // "video" => "required|mimetypes:video/x-flv,video/mp4,application/x-mpegURL,video/MP2T,video/3gpp,video/quicktime,video/x-msvideo,video/x-ms-wmv",
-                // "file" => "required|file|max:10240",
+                "video.*" => "nullable|url",
+                "file.*" => "nullable|mimes:pdf|max:10000",
             ],
             [
-                "subject_id|integer" => "Invalid data",
-
+                "subject_id.integer" => "Invalid data",
+                "video.*" => "Invalid url",
             ]
         );
-
-
-        $inputs = $request->only('title', 'note');
+        $inputs = $request->only('title', 'note', 'video');
         $destinationPath = public_path('uploads');
-        $videoArray = [];
-        $fileArray = [];
-        if ($request->file('video')) {
-            foreach ($request->file('video') as $video) {
-                $videoName = time() . '_' . $video->getClientOriginalName();
-                $video->move($destinationPath, $videoName);
-                $videoArray += ['video' => 'uploads/' . $videoName];
+        if ($request->file('file')) {
+            $filesArray = [];
+            foreach ($request->file('file') as $file) {
+                $fileName = time() . '_' . $file->getClientOriginalName();
+                $file->move($destinationPath, $fileName);
+                $filesArray[] = 'uploads/' . $fileName;
+            }
+            $inputs += ['files' =>  $filesArray];
+        }
+        $chapterinputs = $request->only('name', 'description', 'subject_id', 'chapter_no');
+        $chapter = Chapter::create($chapterinputs);
+        if (isset($inputs['video'])) {
+            foreach ($inputs['video'] as $vid) {
+                ChapterContent::create([
+                    'chapter_id' => $chapter->id,
+                    'video' => $vid,
+                ]);
             }
         }
-        if ($request->file('file')) {
-            $file = $request->file('file');
-            $fileName = time() . '_' . $file->getClientOriginalName();
-            $file->move($destinationPath, $fileName);
-            $inputs += ['file' => 'uploads/' . $fileName];
+        if (isset($inputs['files'])) {
+            foreach ($inputs['files'] as $fil) {
+                ChapterContent::create([
+                    'chapter_id' => $chapter->id,
+                    'file' => $fil,
+                ]);
+            }
         }
-        // dd($request->only('name', 'description', 'subject_id'));
-        // dd($inputs);
-        $chapter = Chapter::create($request->only('name', 'description', 'subject_id','chapter_no'));
-        $inputs += ['chapter_id' => $chapter->id];
-        ChapterContent::create($inputs);
-        foreach($request->video as $data){
-            $content = new ChapterContent();
-            $content->title =$request->title;
-            $content->note =$request->note;
-            $content->video =$data;
-            $content->chapter_id =$chapter->id;
-            $content->save();
-        }
-        if($request->only("submittedFromEdit")){
-            return redirect()->route('admin.chapter.index');
-        }
-        // $chapter->content()->save($chapter);
-        return redirect()->back();
+        return redirect()->route('admin.chapter.index', ['success', 'chapter added']);
     }
 
     /**
@@ -135,46 +126,17 @@ class ChapterController extends Controller
         //
         $request->validate(
             [
-                "ccid" => "required|integer",
                 "name" => "required|string|max:100",
                 "description" => "required|string|max:255",
+                "chapter_no" => "required|integer",
                 "subject_id" => "required|integer",
-                "title" => "required|string|max:100",
-                "note" => "required|string|max:255",
-                "video" => "nullable|mimetypes:video/x-flv,video/mp4,application/x-mpegURL,video/MP2T,video/3gpp,video/quicktime,video/x-msvideo,video/x-ms-wmv",
-                "file" => "nullable|file|max:10240",
             ],
             [
-                "subject_id.required" => "Select a Subject",
-                "video.mimetypes" => "Video formate is not supported",
+                "subject_id.integer" => "Invalid data",
             ]
         );
         $chapter = Chapter::find($id);
-        $chapterContent = ChapterContent::find($request->ccid);
-        $inputs = $request->only('title', 'note');
-        $destinationPath = public_path('uploads');
-        if ($request->file('video')) {
-            $oldVideo =  $chapterContent->video;
-            if (file_exists($oldVideo)) {
-                unlink($oldVideo);
-            }
-            $video = $request->file('video');
-            $videoName = time() . '_' . $video->getClientOriginalName();
-            $video->move($destinationPath, $videoName);
-            $inputs += ['video' => 'uploads/' . $videoName];
-        }
-        if ($request->file('file')) {
-            $oldFile =  $chapterContent->file;
-            if (file_exists($oldFile)) {
-                unlink($oldFile);
-            }
-            $file = $request->file('file');
-            $fileName = time() . '_' . $file->getClientOriginalName();
-            $file->move($destinationPath, $fileName);
-            $inputs += ['file' => 'uploads/' . $fileName];
-        }
-        $chapterContent->update($inputs);
-        $chapter->update($request->only('name', 'description', 'subject_id'));
+        $chapter->update($request->only('name', 'description', 'subject_id', 'chapter_no'));
         return redirect()->route('admin.chapter.index');
     }
 

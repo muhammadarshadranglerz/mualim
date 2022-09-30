@@ -75,16 +75,20 @@ class ProfileController extends Controller
     public function update(Request $request)
     {
         $user = User::find(Auth::id());
-        $user->update([
-            'name' => $request->name,
-            'gender' => $request->gender,
-            'organization' => $request->organization,
-            'designation' => $request->designation,
-            'qualification' => $request->qualification,
-            'experience' => $request->experience,
-            'cnic' => $request->cnic,
-            'email' => $request->email,
-        ]);
+        if (isset($request->name)) {
+            $user->name = $request->name;
+        }
+        if (isset($request->email)) {
+            $user->email = $request->email;
+        }
+        if ($request->file('image')) {
+            $file = $request->file('image');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $destinationPath = public_path('uploads');
+            $file->move($destinationPath, $fileName);
+            $user->image = 'uploads/' . $fileName;
+        }
+        $user->save();
 
         return response([
             'success' => 'Updated Successfully',

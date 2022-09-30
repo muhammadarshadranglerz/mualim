@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use App\Models\User;
+use App\Models\Score;
+use App\Models\Status;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class ReportController extends Controller
 {
@@ -14,7 +17,10 @@ class ReportController extends Controller
      */
     public function index()
     {
-        $users = [ ];
+        // $users = User::all();
+        $users = User::whereHas('roles', function ($q) {
+            $q->where('title', 'User');
+        })->get();
         return view('admin.report.index',compact('users'));
     }
 
@@ -58,7 +64,11 @@ class ReportController extends Controller
      */
     public function edit($id)
     {
-        //
+        $certificate = Score::with('subject','chapter')->where('teacher_id',$id)->get();
+        $count = Score::with('subject','chapter')->where('teacher_id',$id)->count();
+        $obtain = Score::with('subject','chapter')->where('teacher_id',$id)->sum('score');
+        return view('admin.report.certificate',compact('certificate','count','obtain'));
+        
     }
 
     /**
@@ -81,6 +91,6 @@ class ReportController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return 'destroy';
     }
 }
