@@ -30,9 +30,9 @@
                                 </div>
                                 <div class="row">
                                     <div class="form-group col-md-6">
-                                        <label>Name</label>
+                                        <label>Qualification</label>
                                         <div class=" border border-dark p-1">
-                                            {{$user->name}}
+                                            {{$user->qualification}}
                                         </div>
                                     </div>
                                     <div class="form-group col-md-6">
@@ -50,7 +50,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group col-md-6">
-                                        <label>designation</label>
+                                        <label>Designation</label>
                                         <div class="border border-dark p-1">
                                            {{$user->designation}}
                                         </div>
