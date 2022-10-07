@@ -100,9 +100,9 @@
                                                 <tr>
                                                     <td></td>
                                                     <td></td>
-                                                    <td>{{100*$count}}</td>
-                                                    <td>{{$obtain}}</td>
-                                                    <td>{{$obtain/$count}}%</td>
+                                                    <td class="fw-bold">{{100*$count}}</td>
+                                                    <td class="fw-bold">{{$obtain}}</td>
+                                                    <td class="fw-bold">{{round($obtain/$count)}}%</td>
                                                     
                                                 </tr>
                                         </tbody>

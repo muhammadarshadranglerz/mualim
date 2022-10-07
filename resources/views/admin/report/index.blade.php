@@ -43,7 +43,7 @@
                                 <td>{{$user->cnic}}</td>
                                 <td>{{$status->subject->name ?? ''}}</td>
                                 <td>{{$status->chapter->name ?? ''}}</td>
-                                <td>{{$percentage ?? '0'}}%</td>
+                                <td>{{round($percentage) ?? '0'}}%</td>
                                 <td>
                                     <div class="d-flex align-items-center gap-2">
 

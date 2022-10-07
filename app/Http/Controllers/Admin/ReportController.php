@@ -19,7 +19,7 @@ class ReportController extends Controller
     {
         // $users = User::all();
         $users = User::whereHas('roles', function ($q) {
-            $q->where('title', 'User');
+            $q->where('id', 2);
         })->get();
         return view('admin.report.index',compact('users'));
     }

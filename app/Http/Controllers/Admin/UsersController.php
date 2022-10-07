@@ -21,7 +21,7 @@ class UsersController extends Controller
 
         // $users = User::with(['roles'])->get();
         $users = User::whereHas('roles', function ($q) {
-            $q->where('title', 'User');
+            $q->where('id',2);
         })->get();
         return view('admin.users.index', compact('users'));
     }
@@ -37,11 +37,6 @@ class UsersController extends Controller
 
     public function store(StoreUserRequest $request)
     {
-        $request->validate([
-            'phone'=> 'required|unique:users',
-            'email'=> 'required|unique:users',
-        ]);
-        
         $user = User::create($request->all());
         $user->roles()->sync($request->input('roles', []));
 

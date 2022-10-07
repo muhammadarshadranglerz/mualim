@@ -3,14 +3,14 @@
 
 <div class="card">
     <div class="card-header">
-        {{ trans('Create User') }}
+        {{ trans('Create Teacher') }}
     </div>
 
     <div class="card-body">
         <form method="POST" action="{{ route("admin.users.store") }}" enctype="multipart/form-data">
             @csrf
             <div class="form-group">
-                <label class="required" for="name">{{ trans('cruds.user.fields.name') }}</label>
+                <label class="required" for="name">Teacher Name</label>
                 <input class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" type="text" name="name" id="name" value="{{ old('name', '') }}" required>
                 @if($errors->has('name'))
                     <div class="txt-danger">
@@ -41,8 +41,14 @@
                 @endif
             </div>
             <div class="form-group">
-                <label class="required" for="designation">designation</label>
-                <input class="form-control {{ $errors->has('designation') ? 'is-invalid' : '' }}" type="text" name="designation" id="designation" value="{{ old('designation', '') }}" required>
+                <label class="required" for="designation">Designation</label>
+                <select class="form-control select2" name="designation" id="designation" required>
+                    <option selected disabled>Select Designation</option>
+                    <option>Teacher</option>
+                    <option>District Officer</option>
+                    <option>District Manager</option>
+                    <option>Manager</option>
+                </select>
                 @if($errors->has('designation'))
                     <div class="txt-danger">
                         {{ $errors->first('designation') }}
@@ -51,7 +57,7 @@
             </div>
             <div class="form-group">
                 <label class="required" for="phone">Phone</label>
-                <input class="form-control {{ $errors->has('phone') ? 'is-invalid' : '' }}" type="text" name="phone" id="phone" value="{{ old('phone', '') }}" required>
+                <input class="form-control {{ $errors->has('phone') ? 'is-invalid' : '' }}" type="number" name="phone" id="phone" value="{{ old('phone', '') }}" oninput="maxLengthPhone(this)" maxlength="13" required>
                 @if($errors->has('phone'))
                     <div class="txt-danger">
                         {{ $errors->first('phone') }}
@@ -60,8 +66,8 @@
             </div>
            
             <div class="form-group">
-                <label class="required" for="email">{{ trans('cruds.user.fields.email') }}</label>
-                <input class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}" type="email" name="email" id="email" value="{{ old('email') }}" required>
+                <label for="email">{{ trans('cruds.user.fields.email') }}</label>
+                <input class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}" type="email" name="email" id="email" value="{{ old('email') }}">
                 @if($errors->has('email'))
                     <div class="txt-danger">
                         {{ $errors->first('email') }}
@@ -95,7 +101,13 @@
             </div>
             <div class="form-group">
                 <label class="required" for="qualification">Qualification</label>
-                <input class="form-control {{ $errors->has('qualification') ? 'is-invalid' : '' }}" type="text" name="qualification" id="qualification" value="{{ old('qualification', '') }}" required>
+                <select class="form-control select2" name="qualification" id="qualification" required>
+                    <option selected disabled>Select Qualification</option>
+                    <option>Matric</option>
+                    <option>Intermediate</option>
+                    <option>Bachlor</option>
+                    <option>Master</option>
+                </select>
                 @if($errors->has('qualification'))
                     <div class="txt-danger">
                         {{ $errors->first('qualification') }}
@@ -113,7 +125,7 @@
             </div>
             <div class="form-group">
                 <label class="required" for="cnic">CNIC</label>
-                <input class="form-control {{ $errors->has('cnic') ? 'is-invalid' : '' }}" type="text" name="cnic" id="cnic" value="{{ old('cnic', '') }}" required>
+                <input class="form-control {{ $errors->has('cnic') ? 'is-invalid' : '' }}" type="text" name="cnic" id="cnic" value="{{ old('cnic', '') }}"  maxlength="15" required>
                 @if($errors->has('cnic'))
                     <div class="txt-danger">
                         {{ $errors->first('cnic') }}
@@ -128,7 +140,13 @@
         </form>
     </div>
 </div>
-
-
-
+@endsection
+@section('footer.script')
+<script>
+    function maxLengthPhone(object)
+    {
+      if (object.value.length > object.maxLength)
+        object.value = object.value.slice(0, object.maxLength)
+    }
+  </script>
 @endsection

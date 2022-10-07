@@ -4,14 +4,14 @@
         <div style="margin-bottom: 10px;" class="row">
             <div class="col-lg-12">
                 <a class="btn btn-success" href="{{ route('admin.users.create') }}">
-                    {{ trans('Add User') }}
+                    {{ trans('Add Teachers') }}
                 </a>
             </div>
         </div>
     @endcan
     <div class="card">
         <div class="card-header">
-            {{ trans('User') }}
+            {{ trans('All Teacher') }}
         </div>
 
         <div class="card-body">
@@ -20,7 +20,7 @@
                     <thead>
                         <tr>
                             <th> #</th>
-                            <th> Name</th>
+                            <th>Teacher Name</th>
                             <th> Gender</th>
                             <th> Organization</th>
                             <th> Designation</th>

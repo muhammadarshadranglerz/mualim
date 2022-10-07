@@ -284,7 +284,7 @@
                                             @endcan
 
                                             @can('user_access')
-                                                <li><a href="{{ route('admin.users.index') }}">User</a></li>
+                                                <li><a href="{{ route('admin.users.index') }}">Teachers</a></li>
                                             @endcan
 
                                         </ul>
