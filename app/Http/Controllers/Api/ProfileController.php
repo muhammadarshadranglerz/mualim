@@ -106,4 +106,28 @@ class ProfileController extends Controller
     {
         //
     }
+
+    public function passwordUpdate(Request $request){
+        $request->validate([
+            'phone' => 'required',
+            'password' => 'required',
+        ]);
+
+        if($user = User::wherePhone($request->phone)->first()){
+            $user->password = bcrypt($request->password);
+            $user->save();
+
+            return response()->json([
+                'success' => 'your password has been updated successfuly',
+            ], 200);
+        }else{
+            return response()->json([
+                'error' => 'Your given Number is invalid',
+            ], 401);
+        }
+    }
+    
+
+
+
 }

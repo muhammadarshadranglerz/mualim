@@ -6,6 +6,7 @@ Route::post('Register', 'Api\AuthController@register');
 Route::post('forgot_password', 'Api\AuthController@forgot_password');
 Route::get('token_confirm/{token}', 'Api\AuthController@tokenConfirm')->name('token_confirm');
 Route::get('password_change', 'Api\AuthController@submitResetPassword')->name('password_change');
+Route::post('password_update', 'Api\ProfileController@passwordUpdate');
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
     

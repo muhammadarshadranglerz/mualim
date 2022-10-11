@@ -3,15 +3,13 @@
 namespace App\Models;
 
 use Carbon\Carbon;
-use \DateTimeInterface;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\HasApiTokens;
+use \DateTimeInterface;
 
 class User extends Authenticatable
 {
@@ -34,7 +32,9 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'gender',
-        'organization',
+        'district',
+        'province',
+        'instituion',
         'designation',
         'phone',
         'email',
@@ -53,7 +53,6 @@ class User extends Authenticatable
     {
         return $this->roles()->where('id', 1)->exists();
     }
-
 
     public function getEmailVerifiedAtAttribute($value)
     {
@@ -87,13 +86,13 @@ class User extends Authenticatable
         return $date->format('Y-m-d H:i:s');
     }
 
-     /**
-      * Get the user that owns the User
-      *
-      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-      */
-     public function subject()
-     {
-         return $this->belongsTo(Subject::class, 'subject_id');
-     }
+    /**
+     * Get the user that owns the User
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function subject()
+    {
+        return $this->belongsTo(Subject::class, 'subject_id');
+    }
 }

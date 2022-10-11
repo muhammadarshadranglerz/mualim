@@ -15,10 +15,10 @@ use App\Http\Controllers\Admin\ChapterContentController;
 //     Artisan::call('migrate:fresh --seed');
 //     return 'database updated successfully!';
 // });
-Route::get('/migrate', function () {
-    Artisan::call('migrate');
-    return 'database updated successfully!';
-});
+// Route::get('/migrate', function () {
+//     Artisan::call('migrate');
+//     return 'database updated successfully!';
+// });
 
 
 Route::get('/', function () {

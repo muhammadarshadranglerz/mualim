@@ -20,12 +20,14 @@
                     <thead>
                         <tr>
                             <th> #</th>
-                            <th>Teacher Name</th>
+                            <th> Teacher Name</th>
                             <th> Gender</th>
-                            <th> Organization</th>
                             <th> Designation</th>
                             <th> Phone</th>
                             <th> Email</th>
+                            <th> Instituion</th>
+                            <th> Province</th>
+                            <th> District</th>
                             <th> Qualification</th>
                             <th> Experience</th>
                             <th> CNIC</th>
@@ -39,10 +41,12 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $user->name ?? '' }}</td>
                                 <td>{{ $user->gender ?? '' }}</td>
-                                <td>{{ $user->organization ?? '' }}</td>
                                 <td>{{ $user->designation ?? '' }}</td>
                                 <td>{{ $user->phone ?? '' }}</td>
                                 <td>{{ $user->email ?? '' }}</td>
+                                <td>{{ $user->instituion ?? '' }}</td>
+                                <td>{{ $user->province ?? '' }}</td>
+                                <td>{{ $user->district ?? '' }}</td>
                                 <td>{{ $user->qualification ?? '' }}</td>
                                 <td>{{ $user->experience ?? '' }}</td>
                                 <td>{{ $user->cnic ?? '' }}</td>
