@@ -214,7 +214,7 @@
                             @endif
                         </div>
                         <div class="form-group col-6">
-                            <label  for="third-option">Option C</label>
+                            <label class="required" for="third-option">Option C</label>
                             <input class="form-control {{ $errors->has('third_option') ? 'is-invalid' : '' }}"
                                 type="text" name="third_option" id="third-option"
                                 value="{{ old('third_option', '') }}">
