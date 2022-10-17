@@ -15,14 +15,14 @@ class CreateQuestionsTable extends Migration
     {
         Schema::create('questions', function (Blueprint $table) {
             $table->id();
-            $table->string('question');
-            $table->string('details')->nullable();
+            $table->text('question');
+            $table->text('details')->nullable();
             $table->unsignedBigInteger('chapter_id');
-            $table->string("first_option");
-            $table->string("second_option");
-            $table->string("third_option");
-            $table->string("fourth_option");
-            $table->unsignedInteger("correct");
+            $table->string("first_option")->nullable();
+            $table->string("second_option")->nullable();
+            $table->string("third_option")->nullable();
+            $table->string("fourth_option")->nullable();
+            $table->unsignedInteger("correct")->nullable();
             $table->foreign('chapter_id')->references('id')->on('chapters')->onDelete('cascade');
             $table->timestamps();
         });

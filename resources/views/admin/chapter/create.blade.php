@@ -71,11 +71,7 @@
                     </div>
                     <div class="form-group">
                         <label class="required" for="file">Lecture Attachments</label>
-<<<<<<< HEAD
                         <input type="file" accept=".pdf"
-=======
-                        <input type="file" accept="application/pdf"
->>>>>>> d153089e624e38c34edc45e383b5da3036c43713
                             class="form-control {{ $errors->has('file') ? 'is-invalid' : '' }}" type="text"
                             name="file[]" id="file" multiple>
                         @if ($errors->has('file'))

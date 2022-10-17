@@ -35,7 +35,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="required" for="instituion">Instituion</label>
+                    <label class="required" for="instituion">Institution</label>
                     <input class="form-control {{ $errors->has('instituion') ? 'is-invalid' : '' }}" type="text"
                         name="instituion" id="instituion" value="{{ $user->instituion }}" required>
                     @if ($errors->has('instituion'))

@@ -182,9 +182,9 @@
                             @endif
                         </div>
                         <div class="form-group">
-                            <label class="required" for="details">Details</label>
+                            <label  for="details">Details</label>
                             <input class="form-control {{ $errors->has('details') ? 'is-invalid' : '' }}" type="text"
-                                name="details" id="details" value="{{ old('details', '') }}" required>
+                                name="details" id="details" value="{{ old('details', '') }}">
                             @if ($errors->has('details'))
                                 <div class="txt-danger">
                                     {{ $errors->first('details') }}
@@ -192,10 +192,10 @@
                             @endif
                         </div>
                         <div class="form-group col-6">
-                            <label class="required" for="first-option">Option A</label>
+                            <label  for="first-option">Option A</label>
                             <input class="form-control {{ $errors->has('first_option') ? 'is-invalid' : '' }}"
                                 type="text" name="first_option" id="first-option"
-                                value="{{ old('first_option', '') }}" required>
+                                value="{{ old('first_option', '') }}">
                             @if ($errors->has('first_option'))
                                 <div class="txt-danger">
                                     {{ $errors->first('first_option') }}
@@ -203,10 +203,10 @@
                             @endif
                         </div>
                         <div class="form-group col-6">
-                            <label class="required" for="second-option">Option B</label>
+                            <label  for="second-option">Option B</label>
                             <input class="form-control {{ $errors->has('second_option') ? 'is-invalid' : '' }}"
                                 type="text" name="second_option" id="second-option"
-                                value="{{ old('second_option', '') }}" required>
+                                value="{{ old('second_option', '') }}">
                             @if ($errors->has('second_option'))
                                 <div class="txt-danger">
                                     {{ $errors->first('second_option') }}
@@ -214,10 +214,10 @@
                             @endif
                         </div>
                         <div class="form-group col-6">
-                            <label class="required" for="third-option">Option C</label>
+                            <label  for="third-option">Option C</label>
                             <input class="form-control {{ $errors->has('third_option') ? 'is-invalid' : '' }}"
                                 type="text" name="third_option" id="third-option"
-                                value="{{ old('third_option', '') }}" required>
+                                value="{{ old('third_option', '') }}">
                             @if ($errors->has('third_option'))
                                 <div class="txt-danger">
                                     {{ $errors->first('third_option') }}
@@ -225,10 +225,10 @@
                             @endif
                         </div>
                         <div class="form-group col-6">
-                            <label class="required" for="fourth-option">Option D</label>
+                            <label  for="fourth-option">Option D</label>
                             <input class="form-control {{ $errors->has('fourth_option') ? 'is-invalid' : '' }}"
                                 type="text" name="fourth_option" id="fourth-option"
-                                value="{{ old('fourth_option', '') }}" required>
+                                value="{{ old('fourth_option', '') }}">
                             @if ($errors->has('fourth_option'))
                                 <div class="txt-danger">
                                     {{ $errors->first('fourth_option') }}

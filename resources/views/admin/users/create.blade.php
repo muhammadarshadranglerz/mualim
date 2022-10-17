@@ -33,8 +33,8 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="required" for="instituion">Instituion</label>
-                    <input class="form-control {{ $errors->has('instituion') ? 'is-invalid' : '' }}" type="text"
+                    <label class="required" for="instituion">Institution</label>
+                    <input class="form-control {{ $errors->has('instituion') ? 'is-invalid' : '' }}" type="text" spellcheck="true"
                         name="instituion" id="instituion" value="{{ old('instituion', '') }}" required>
                     @if ($errors->has('instituion'))
                         <div class="txt-danger">

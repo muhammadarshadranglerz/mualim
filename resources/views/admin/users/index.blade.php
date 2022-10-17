@@ -25,7 +25,7 @@
                             <th> Designation</th>
                             <th> Phone</th>
                             <th> Email</th>
-                            <th> Instituion</th>
+                            <th> Institution</th>
                             <th> Province</th>
                             <th> District</th>
                             <th> Qualification</th>

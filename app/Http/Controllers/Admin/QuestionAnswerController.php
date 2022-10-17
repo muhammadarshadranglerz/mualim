@@ -45,18 +45,7 @@ class QuestionAnswerController extends Controller
     public function store(Request $request)
     {
         //
-        $request->validate(
-            [
-                "question" => "required|string|max:100",
-                "details" => "required|string|max:255",
-                "first_option" => "required|string|max:255",
-                "second_option" => "required|string|max:255",
-                "third_option" => "required|string|max:255",
-                "fourth_option" => "required|string|max:255",
-                "correct" => "required|integer",
-                "chapter_id" => "required|integer",
-            ]
-        );
+       
         Question::create(
             $request->only('question', 'details', 'chapter_id', 'first_option', 'second_option', 'third_option', 'fourth_option', 'correct')
         );
@@ -101,17 +90,7 @@ class QuestionAnswerController extends Controller
     public function update(Request $request, $id)
     {
         //
-        $request->validate(
-            [
-                "question" => "required|string|max:100",
-                "details" => "required|string|max:255",
-                "first_option" => "required|string|max:255",
-                "second_option" => "required|string|max:255",
-                "third_option" => "required|string|max:255",
-                "fourth_option" => "required|string|max:255",
-                "correct" => "required|integer",
-            ]
-        );
+       
         Question::find($id)
             ->update(
                 $request->only('question', 'details', 'first_option', 'second_option', 'third_option', 'fourth_option', 'correct')
